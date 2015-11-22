@@ -94,3 +94,15 @@ set clipboard+=unnamedplus
 set incsearch
 " backspace clears search
 nmap <silent> <BS> :nohlsearch<CR>
+
+" <Esc> exits terminal mode
+:tnoremap <Esc> <C-\><C-n>
+" standardize navigation across terminal and normal mode
+:tnoremap <A-h> <C-\><C-n><C-w>h
+:tnoremap <A-j> <C-\><C-n><C-w>j
+:tnoremap <A-k> <C-\><C-n><C-w>k
+:tnoremap <A-l> <C-\><C-n><C-w>l
+:nnoremap <A-h> <C-w>h
+:nnoremap <A-j> <C-w>j
+:nnoremap <A-k> <C-w>k
+:nnoremap <A-l> <C-w>l
