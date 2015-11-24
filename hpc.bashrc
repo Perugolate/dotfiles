@@ -55,3 +55,7 @@ alias nvim='vim'
 # zsh-like RPROMPT
 source ~/.rprompt.bash
 export RPROMPT="\`pwd\` "
+
+# history search
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
