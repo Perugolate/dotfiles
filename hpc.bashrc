@@ -46,8 +46,6 @@ fi
 module add null
 
 # some more ls aliases
-alias ll='ls -alF'
-alias l='ls -CF'
 alias na='nano'
 alias scratch='cd /scratch/$USER/'
 alias nvim='vim'
