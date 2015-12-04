@@ -42,12 +42,8 @@ fi
 
 # User specific aliases and functions
 
-# Prevents error on 'module initadd'
-module add null
-
 # some more ls aliases
 alias na='nano'
-alias scratch='cd /scratch/$USER/'
 alias nvim='vim'
 alias l='ls -lah'
 alias la='ls -lAh'
