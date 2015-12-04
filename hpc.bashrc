@@ -54,6 +54,11 @@ alias la='ls -lAh'
 alias ll='ls -lh'
 alias ls='ls --color=tty'
 alias lsa='ls -lah'
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
 
 # zsh-like RPROMPT
 source ~/.rprompt.bash
