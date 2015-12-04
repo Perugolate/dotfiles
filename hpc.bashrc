@@ -49,6 +49,11 @@ module add null
 alias na='nano'
 alias scratch='cd /scratch/$USER/'
 alias nvim='vim'
+alias l='ls -lah'
+alias la='ls -lAh'
+alias ll='ls -lh'
+alias ls='ls --color=tty'
+alias lsa='ls -lah'
 
 # zsh-like RPROMPT
 source ~/.rprompt.bash
