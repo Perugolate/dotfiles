@@ -59,6 +59,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " Note: You don't set neobundle setting in .gvimrc!
 NeoBundle 'bling/vim-airline'
 NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'edkolev/promptline.vim'
 
 call neobundle#end()
 
@@ -94,6 +95,8 @@ set clipboard+=unnamedplus
 set incsearch
 " backspace clears search
 nmap <silent> <BS> :nohlsearch<CR>
+" get rid of carets in airline
+set fillchars+=stl:\ ,stlnc:\
 
 " <Esc> exits terminal mode
 :tnoremap <Esc> <C-\><C-n>
