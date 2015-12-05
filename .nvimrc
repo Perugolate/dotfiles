@@ -109,3 +109,21 @@ set fillchars+=stl:\ ,stlnc:\
 :nnoremap <A-j> <C-w>j
 :nnoremap <A-k> <C-w>k
 :nnoremap <A-l> <C-w>l
+
+" promptline config, x, y, z, warn in rprompt
+let g:promptline_preset = {
+        \'b'    : [ promptline#slices#user() ],
+        \'z'    : [ promptline#slices#cwd({ 'dir_limit': 0 }) ],
+        \'warn' : [ promptline#slices#last_exit_code() ],
+        \'a'    : [ '%m' ],
+        \'c'    : [ promptline#slices#git_status(), promptline#slices#vcs_branch() ]}
+
+let g:promptline_theme = {
+        \'a'    : [188, 234],
+        \'b'    : [231, 240],
+        \'c'    : [188, 234],
+	\'x'    : [188, 234],
+        \'y'    : [231, 240],
+        \'z'    : [188, 234],
+        \'warn' : [232, 166]}
+
