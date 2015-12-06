@@ -91,6 +91,16 @@ let g:markdown_fenced_languages = ['bash=sh', 'python', 'sql', 'R=r']
 let g:markdown_github_languages = ['bash=sh', 'python', 'sql', 'R=r']
 " Always use clipboard rather then +/* registers
 set clipboard+=unnamedplus
+set wildmenu            " visual autocomplete for command menu
+set cursorline          " highlight current line
+set showmatch           " highlight matching [{()}]
+set hlsearch            " highlight matches
+set splitright          " vsplit on the right
+
+" move vertically by visual line
+nnoremap j gj
+nnoremap k gk
+
 " incremental search
 set incsearch
 " backspace clears search
