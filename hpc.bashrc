@@ -65,5 +65,11 @@ source ~/.rprompt.bash
 export RPROMPT="\`pwd\` "
 
 # history search
-bind '"\e[A": history-search-backward'
-bind '"\e[B": history-search-forward'
+if [ -t 1 ]
+then
+    bind '"\e[A": history-search-backward'
+    bind '"\e[B": history-search-forward'
+fi
+
+# vim promptline
+source ~/.shell_prompt.sh
