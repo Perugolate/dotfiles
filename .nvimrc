@@ -108,17 +108,24 @@ nmap <silent> <BS> :nohlsearch<CR>
 " get rid of carets in airline
 set fillchars+=stl:\ ,stlnc:\
 
-" <Esc> exits terminal mode
-:tnoremap <Esc> <C-\><C-n>
-" standardize navigation across terminal and normal mode
-:tnoremap <A-h> <C-\><C-n><C-w>h
-:tnoremap <A-j> <C-\><C-n><C-w>j
-:tnoremap <A-k> <C-\><C-n><C-w>k
-:tnoremap <A-l> <C-\><C-n><C-w>l
-:nnoremap <A-h> <C-w>h
-:nnoremap <A-j> <C-w>j
-:nnoremap <A-k> <C-w>k
-:nnoremap <A-l> <C-w>l
+" if neovim then map quick terminal/window navigation and terminal mode exit
+" if vim then map window navigation only
+if exists(':tnoremap')
+  tnoremap <Esc> <C-\><C-n>
+  tnoremap <A-h> <C-\><C-n><C-w>h
+  tnoremap <A-j> <C-\><C-n><C-w>j
+  tnoremap <A-k> <C-\><C-n><C-w>k
+  tnoremap <A-l> <C-\><C-n><C-w>l
+  nnoremap <A-h> <C-w>h
+  nnoremap <A-j> <C-w>j
+  nnoremap <A-k> <C-w>k
+  nnoremap <A-l> <C-w>l
+else
+  nnoremap <Esc>h <C-w>h
+  nnoremap <Esc>j <C-w>j
+  nnoremap <Esc>k <C-w>k
+  nnoremap <Esc>l <C-w>l
+endif
 
 " promptline config, x, y, z, warn in rprompt
 let g:promptline_preset = {
