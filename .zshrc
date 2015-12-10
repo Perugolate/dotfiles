@@ -9,4 +9,4 @@ setopt interactivecomments
 export EDITOR='nvim'
 ZSH_HIGHLIGHT_STYLES[globbing]='fg=yellow'
 ZSH_HIGHLIGHT_STYLES[path]='bold'
-source home/paul/.shell_prompt.sh
+source /home/paul/.shell_prompt.sh
