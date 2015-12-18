@@ -1,9 +1,6 @@
 " initial config
 " cd && curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh
 " scp -r ~/Dropbox/setup/neovim/colors hpc:~/.vim/
-" cd ~/.vim/bundle
-" git clone https://github.com/bling/vim-airline
-" git clone git://github.com/tpope/vim-fugitive.git
 
 filetype plugin on
 
@@ -125,7 +122,7 @@ let g:promptline_preset = {
         \'b'    : [ promptline#slices#user() ],
         \'z'    : [ promptline#slices#cwd({ 'dir_limit': 0 }) ],
         \'warn' : [ promptline#slices#last_exit_code() ],
-        \'a'    : [ '%m' ],
+        \'a'    : [ '\h' ],
         \'c'    : [ promptline#slices#git_status(), promptline#slices#vcs_branch() ]}
 
 let g:promptline_theme = {
