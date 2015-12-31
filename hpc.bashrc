@@ -59,6 +59,7 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias ......="cd ../../../../.."
+alias sq='queue -u $USER'
 # git aliases
 alias g=git
 alias ga='git add'
