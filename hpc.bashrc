@@ -182,5 +182,5 @@ then
     bind '"\e[B": history-search-forward'
 fi
 
-# vim promptline
-source ~/.shell_prompt.sh
+# vim promptline (currently disabled as it doesn't line-wrap properly)
+# source ~/.shell_prompt.sh
