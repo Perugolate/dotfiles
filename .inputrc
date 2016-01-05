@@ -1,6 +1,8 @@
-# R uses .inputrc so include history search bindings here too
+# R uses .inputrc so include key bindings that I can't live without in R
 
 ## arrow up
 "\e[A":history-search-backward
 ## arrow down
 "\e[B":history-search-forward
+## last argument
+"\e.":yank-last-arg
