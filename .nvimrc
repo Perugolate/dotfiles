@@ -108,7 +108,9 @@ nmap <silent> <BS> :nohlsearch<CR>
 " get rid of carets in airline
 set fillchars+=stl:\ ,stlnc:\
 
-" if neovim then map quick terminal/window navigation and terminal mode exit
+" if neovim then map quick terminal/window navigation, and terminal mode exit
+" if neovim also fix terminal mode Alt+b and Alt+f line navigation and Alt+.
+" for last argument
 " if vim then map window navigation only
 if exists(':tnoremap')
   tnoremap <Esc> <C-\><C-n>
@@ -116,6 +118,9 @@ if exists(':tnoremap')
   tnoremap <A-j> <C-\><C-n><C-w>j
   tnoremap <A-k> <C-\><C-n><C-w>k
   tnoremap <A-l> <C-\><C-n><C-w>l
+  tnoremap <A-b> <Esc>b
+  tnoremap <A-f> <Esc>f
+  tnoremap <M-.> <Esc>.
   nnoremap <A-h> <C-w>h
   nnoremap <A-j> <C-w>j
   nnoremap <A-k> <C-w>k
