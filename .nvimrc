@@ -120,7 +120,7 @@ if exists(':tnoremap')
   tnoremap <A-l> <C-\><C-n><C-w>l
   tnoremap <A-b> <Esc>b
   tnoremap <A-f> <Esc>f
-  tnoremap <M-.> <Esc>.
+  tnoremap <A-.> <Esc>.
   nnoremap <A-h> <C-w>h
   nnoremap <A-j> <C-w>j
   nnoremap <A-k> <C-w>k
