@@ -1,0 +1,6 @@
+# R uses .inputrc so include history search bindings here too
+
+## arrow up
+"\e[A":history-search-backward
+## arrow down
+"\e[B":history-search-forward
