@@ -87,8 +87,8 @@ set timeoutlen=50
 " let g:vim_markdown_folding_disabled=1
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 " Markdown configuration
-let g:markdown_fenced_languages = ['bash=sh', 'python', 'sql', 'R=r']
-let g:markdown_github_languages = ['bash=sh', 'python', 'sql', 'R=r']
+let g:markdown_fenced_languages = ['sh', 'python', 'sql', 'R=r', 'awk', 'perl6', 'perl']
+"let g:markdown_github_languages = ['bash=sh', 'python', 'sql', 'R=r']
 " Always use clipboard rather then +/* registers
 set clipboard+=unnamedplus
 set wildmenu            " visual autocomplete for command menu
