@@ -149,3 +149,5 @@ let g:promptline_theme = {
         \'z'    : [188, 234],
         \'warn' : [232, 166]}
 
+" neovim update introduces folds where I don't want them so:
+set nofoldenable
