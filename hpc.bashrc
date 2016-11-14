@@ -1,3 +1,4 @@
+export LANG=en_US.UTF-8
 # export PYTHONPATH=$PYTHONPATH:/$HOME/.local/lib/python2.6/site-packages/
 # export PATH=$PATH:
 # .bashrc
