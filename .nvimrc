@@ -151,3 +151,5 @@ let g:promptline_theme = {
 
 " neovim update introduces folds where I don't want them so:
 set nofoldenable
+" turn on live substitution
+set inccommand=nosplit
