@@ -153,3 +153,7 @@ let g:promptline_theme = {
 set nofoldenable
 " turn on live substitution
 set inccommand=nosplit
+" get rid of `q` in command prompt see https://github.com/neovim/neovim/issues/7049
+set guicursor=
+" get rid of line numbers after opening terminal in a split
+autocmd TermOpen * set nonumber
