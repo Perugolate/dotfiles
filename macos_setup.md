@@ -159,8 +159,8 @@ System Preferences > Accessibility > Pointer Control >
 ### increased font size from 11 to 13
 
 ```
-terminal > preferences > profiles >
-  text > Font > Change...
+iTerm2 > preferences > profiles >
+  text > Font
 ```
 
 ### Remove recent applications from the dock
@@ -198,6 +198,4 @@ touch ~/.zsh_sessions_disable
 ```
 
 Update, this doesn't work
-
-
 
