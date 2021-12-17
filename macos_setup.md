@@ -96,7 +96,7 @@ touch ~/.config/nvim/init.vim
 There are many posts about workarounds to use the clipboard as the default register on macOS. Some involve installing `pbcopy`and `pbpaste`. However, adding the following to `~/.config/nvim/init.vim` seems to work so far.
 
 ```
-set clipboard=unnamed
+set clipboard+=unnamedplus   " use clipboard rather then +/* registers
 ```
 
 ### Install dein plugin manager
