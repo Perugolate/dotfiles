@@ -1,14 +1,16 @@
 # Recreating KDE setup under macOS Monterey
 
-- [ ] airline/powerline
+## To do
+
+- [x] airline/powerline
 - [ ] decide on `R` install method
 - [ ] finsh vim config
 - [ ] alt+f doesn't work in insert mode (alt+b works though ...)
 - [ ] configure minimal keypress window switching in neovim (should work now with iTerm2 <kbd>Option</kbd> configuration.
-
-<kbd>Ctrl</kbd>
-
- 
+- [ ] fix syntax highlighting in Neovim (red brackets)
+- [x] transparent background in iTerm2
+- [x] yakuake behaviour
+- [ ]
 
 ## Switch to `iTerm2`
 
@@ -143,6 +145,28 @@ syntax enable
 "End dein Scripts-------------------------
 ```
 
+### color scheme
+
+```sh
+mkdir ~/.config/nvim/colors                                         ~
+gcl https://github.com/gkjgh/cobalt.git
+```
+
+### Powerline fonts
+
+```sh
+git clone https://github.com/powerline/fonts.git --depth=1
+cd fonts
+./install.sh
+cd ..
+rm -rf fonts
+```
+
+add the following to init.vim
+
+```
+let g:airline_powerline_fonts = 1
+```
 
 ## misc
 
@@ -198,4 +222,41 @@ touch ~/.zsh_sessions_disable
 ```
 
 Update, this doesn't work
+
+### configure promptline
+
+I always forget that this is configured by vim-promptline instead of powerline etc. 
+
+The following in `init.vim` configures separate left and right status lines:
+
+```sh
+" promptline config, x, y, z, warn in rprompt
+let g:promptline_preset = {
+        \'b'    : [ promptline#slices#user() ],
+        \'z'    : [ promptline#slices#cwd({ 'dir_limit': 0 }) ],
+        \'warn' : [ promptline#slices#last_exit_code() ],
+        \'a'    : [ '%m' ],
+        \'c'    : [ promptline#slices#git_status(), promptline#slices#vcs_branch() ]}
+
+let g:promptline_theme = {
+        \'a'    : [188, 234],
+        \'b'    : [231, 240],
+        \'c'    : [188, 234],
+	\'x'    : [188, 234],
+        \'y'    : [231, 240],
+        \'z'    : [188, 234],
+        \'warn' : [232, 166]}
+```
+
+Then generate `~/.promptline.sh` from within Neovim with:
+
+```
+:PromptlineSnapshot ~/.promptline.sh airline
+```
+
+add the following to `.zshrc`:
+
+```sh
+source ~/.promptline.sh
+```
 
