@@ -85,7 +85,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 My other Neovim installs have used `~/.vimrc` because I made the switch to Neovim before the change to `~/.config/nvim/init.vim`.
 
-````sh
+```sh
 brew install neovim
 mkdir -p ~/.config/nvim/
 touch ~/.config/nvim/init.vim
@@ -101,7 +101,7 @@ set clipboard=unnamed
 
 ### Install dein plugin manager
 
-````sh
+```sh
 curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh
 sh ./installer.sh ~/.local/share/dein
 ```
