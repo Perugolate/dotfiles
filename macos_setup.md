@@ -4,7 +4,7 @@
 - [ ] decide on `R` install method
 - [ ] finsh vim config
 - [ ] alt+f doesn't work in insert mode (alt+b works though ...)
-
+- [ ] configure minimal keypress window switching in neovim (should work now with iTerm2 <kbd>Option</kbd> configuration.
 
 <kbd>Ctrl</kbd>
 
@@ -14,9 +14,9 @@
 
 Initially used `Terminal`, which seemed fine. Apple keyboards have no <kbd>Alt</kbd> (Meta) key, so was unable to move between words with <kbd>Alt</kbd>+<kbd>B</kbd> etc. I added the `Option as Meta key` in the `Terminal` app, which worked fine. 
 
-However, there is no <kbd>|</kbd> on the german macbook air keyboard - <kbd>Option</kbd>+<kbd>7</kbd> is used for <kbd>|</kbd> instead. Therefore I was unable to get a <kbd>|</kbd> in terminal because <kbd>Option</kbd> was instead set to (Meta) <kbd>Alt</kbd>. Subsequently discovered that <kbd>Option</kbd>+<kbd>&#8592;</kbd> and <kbd>Option</kbd>+<kbd>&#8594</kbd>; gives the desired behaviour and so disabled `Option as Meta key`.
+However, there is no <kbd>|</kbd> on the german macbook air keyboard - <kbd>Option</kbd>+<kbd>7</kbd> is used for <kbd>|</kbd> instead. Therefore I was unable to get a `|` in terminal because <kbd>Option</kbd> was instead set to (Meta) <kbd>Alt</kbd>. Subsequently discovered that <kbd>Option</kbd>+<kbd>&#8592;</kbd> and <kbd>Option</kbd>+<kbd>&#8594;</kbd> gives the desired behaviour and so disabled `Option as Meta key`.
 
-I then realised that I wouldn't be able to use <kbd>Alt</kbd>+<kbd>.</kbd> to `yank-last-arg`/`insert-last-argument` but that <kbd>Esc</kbd>+<kbd>.</kbd> can be used instead, albeit having to release <kbd>Esc</kbd> each time. However, after installing Neovim I realised that <kbd>Esc</kbd>+<kbd>.</kbd> cannot be used inside a terminal split, instead <kbd>Esc</kbd> triggers the exit to normal mode. This stumped me for a while until I read that iTerm2 allows the left and right <kbd>Option</kbd> to be remapped independently. I mapped left <kbd>Option</kbd> to `Esc+`. This allows me to use (left) <kbd>Option</kbd>+<kbd>.</kbd> to `yank-last-arg`/`insert-last-argument` and use (right) <kbd>Option</kbd> for characters such as pipe.
+I then realised that I wouldn't be able to use <kbd>Alt</kbd>+<kbd>.</kbd> to `yank-last-arg`/`insert-last-argument` but that <kbd>Esc</kbd>+<kbd>.</kbd> can be used instead, albeit having to release <kbd>Esc</kbd> each time. However, after installing Neovim I realised that <kbd>Esc</kbd>+<kbd>.</kbd> cannot be used inside a terminal split, <kbd>Esc</kbd> instead triggers the exit to normal mode. This stumped me for a while until I read that `iTerm2` allows the left and right <kbd>Option</kbd> to be remapped independently. I mapped left <kbd>Option</kbd> to `Esc+`. This allows me to use (left) <kbd>Option</kbd>+<kbd>.</kbd> to `yank-last-arg`/`insert-last-argument` and use (right) <kbd>Option</kbd> for characters such as pipe.
 
 ## Set `Caps Lock` as an additional `Control` key
 
@@ -25,15 +25,15 @@ System Preferences > Keyboard >
 
 ## Install `ohmyzsh`
 
-Recent versions of macOS seem to have switched to `zsh`by default, which is already something.
+Recent versions of macOS seem to have switched to `zsh` by default, which is already something.
 
 ```sh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
-This should fail and in doing so prompt the download and installation of the developer tools. Then repeat the command.
+This fails and in doing so prompts the download and installation of the developer tools. The downlaod/install then works.
 
-Installing `ohmyzsh` introduced the `Up Arrow` and `Down Arrow` history search behaviour that is specified in my KDE `.inputrc`. This is OK for now but may cause problems later on because (if I remember correctly) `.inputrc` also correctly the history search in `R`. 
+Installing `ohmyzsh` introduced the `Up Arrow` and `Down Arrow` history search behaviour that is specified in my KDE `.inputrc`. This is OK for now but may cause problems later on because (if I remember correctly) `.inputrc` also configures the history search in `R`. 
 
 Install syntax highlighting plugin (not sure if I still use this)
 
@@ -44,7 +44,27 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 Current minimal `.zshrc`
 
 ```sh
+# Path to your oh-my-zsh installation.
+export ZSH="/Users/pauljohnston/.oh-my-zsh"
 
+ZSH_THEME="robbyrussell"
+
+COMPLETION_WAITING_DOTS="true"
+
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git zsh-syntax-highlighting command-not-found dirhistory dirpersist)
+
+source $ZSH/oh-my-zsh.sh
+
+# prompts
+PS1='%n@%m:$ '
+RPROMPT='%~'
+setopt interactivecomments
+export EDITOR='nvim'
+
+# improve the highlighting for directories and globbing
+ZSH_HIGHLIGHT_STYLES[globbing]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[path]='bold'
 ```
 
 
@@ -56,7 +76,7 @@ Current minimal `.zshrc`
 
 Follow the prompts.
 
-````sh
+```sh
 echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/pauljohnston/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
