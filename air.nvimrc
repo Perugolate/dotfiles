@@ -24,14 +24,15 @@ call plug#end()
 "Plug Ins end------------------------
 
 " let g:vim_markdown_folding_disabled=1
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+"autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 " Markdown configuration-------------
 " currently using tpope markdown highlighting that ships with vim 
 " vim-pandoc-syntax is also installed as dep for vim-rmarkdown
-let g:markdown_fenced_languages = ['sh', 'python', 'sql', 'R=r', 'awk']
+"let g:markdown_fenced_languages = ['sh', 'python', 'sql', 'R=r', 'awk']
 " turn off fence concealment by vim-pandoc-syntax
-let g:pandoc#syntax#conceal#use = 0
+let g:pandoc#syntax#conceal#use = 1
+let g:pandoc#syntax#codeblocks#embeds#langs = ["R=r", "bash=sh"]
 
 " Enable transparent background, needed on mac/iterm2?
 hi Normal ctermbg=none
