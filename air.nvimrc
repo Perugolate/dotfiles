@@ -204,3 +204,4 @@ nmap <Leader>cd /```{<CR>NjV/```\n<CR>k<Plug>(neoterm-repl-send)<CR>/```{r<CR>
 " default timeout length seems to be too short for me to use the above mapping
 " had to comment this out again because it slowed down neoterm send too much
 "set timeout timeoutlen=3000 ttimeoutlen=100
+let g:pandoc#spell#enabled = 0
