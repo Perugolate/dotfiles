@@ -205,3 +205,28 @@ nmap <Leader>cd /```{<CR>NjV/```\n<CR>k<Plug>(neoterm-repl-send)<CR>/```{r<CR>
 " had to comment this out again because it slowed down neoterm send too much
 "set timeout timeoutlen=3000 ttimeoutlen=100
 let g:pandoc#spell#enabled = 0
+
+" if neovim then map quick terminal/window navigation, and terminal mode exit
+" if neovim also fix terminal mode Alt+b and Alt+f line navigation and Alt+.
+" for last argument
+" if vim then map window navigation only
+if exists(':tnoremap')
+  tnoremap <Esc> <C-\><C-n>
+  tnoremap <A-h> <C-\><C-n><C-w>h
+  tnoremap <A-j> <C-\><C-n><C-w>j
+  tnoremap <A-k> <C-\><C-n><C-w>k
+  tnoremap <A-l> <C-\><C-n><C-w>l
+  tnoremap <A-b> <Esc>b
+  tnoremap <A-f> <Esc>f
+  tnoremap <A-.> <Esc>.
+  nnoremap <A-h> <C-w>h
+  nnoremap <A-j> <C-w>j
+  nnoremap <A-k> <C-w>k
+  nnoremap <A-l> <C-w>l
+else
+  nnoremap <Esc>h <C-w>h
+  nnoremap <Esc>j <C-w>j
+  nnoremap <Esc>k <C-w>k
+  nnoremap <Esc>l <C-w>l
+endif
+
