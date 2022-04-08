@@ -11,13 +11,16 @@ Plug 'tpope/vim-fugitive'
 Plug 'edkolev/promptline.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'ryanoasis/vim-devicons'
-Plug 'scrooloose/nerdtree'
+Plug 'preservim/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'kassio/neoterm'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'vim-pandoc/vim-rmarkdown'
+Plug 'snakemake/snakemake', {'rtp': 'misc/vim'}
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 "Plug 'plasticboy/vim-markdown'
 " Plug 'jalvesaq/Nvim-R'
 call plug#end()
@@ -32,7 +35,7 @@ call plug#end()
 "let g:markdown_fenced_languages = ['sh', 'python', 'sql', 'R=r', 'awk']
 " turn off fence concealment by vim-pandoc-syntax
 let g:pandoc#syntax#conceal#use = 1
-let g:pandoc#syntax#codeblocks#embeds#langs = ["R=r", "bash=sh"]
+let g:pandoc#syntax#codeblocks#embeds#langs = ["R=r", "bash=sh", "vim"]
 
 " Enable transparent background, needed on mac/iterm2?
 hi Normal ctermbg=none
@@ -229,4 +232,12 @@ else
   nnoremap <Esc>k <C-w>k
   nnoremap <Esc>l <C-w>l
 endif
+
+" fzf.vim shortcut for :Files
+" it is a hangover from ctrlp.vim
+" look at https://vim.fandom.com/wiki/Unused_keys
+" consider shortcuts for :Buffers etc
+nnoremap <C-p> :Files<Cr>
+" Jump to open buffer
+let g:fzf_buffers_jump = 1
 
