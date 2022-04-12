@@ -35,7 +35,7 @@ call plug#end()
 "let g:markdown_fenced_languages = ['sh', 'python', 'sql', 'R=r', 'awk']
 " turn off fence concealment by vim-pandoc-syntax
 let g:pandoc#syntax#conceal#use = 1
-let g:pandoc#syntax#codeblocks#embeds#langs = ["R=r", "bash=sh", "vim"]
+let g:pandoc#syntax#codeblocks#embeds#langs = ["R=r", "bash=sh", "vim", "python"]
 
 " Enable transparent background, needed on mac/iterm2?
 hi Normal ctermbg=none
@@ -109,7 +109,15 @@ let mapleader=" "
 let g:neoterm_default_mod = 'vertical'
 nnoremap , :TREPLSendLine<CR>
 vnoremap , :TREPLSendSelection<CR>
-
+" set the neoterm python repl
+" --no-autoindent was necessary before implementation of bracketed paste
+"let g:neoterm_repl_python = 'ipython --no-autoindent'
+let g:neoterm_repl_python = 'ipython' 
+"let g:neoterm_bracketed_paste = 1
+" had to turn off bracketed paste as it breaks :TREPLSendLine in R
+" use paste magic instead of the exec command (can't remember why though)
+" presumably to handle the pasting of indented code
+let g:neoterm_repl_ipython_magic = 1
 " promptline config---------------------------
 " in combination with ~/.zshrc prompts:
 " PS1='%n@%m:$ '
@@ -240,4 +248,11 @@ endif
 nnoremap <C-p> :Files<Cr>
 " Jump to open buffer
 let g:fzf_buffers_jump = 1
+
+" disable arrows for time being
+" note this also disables scrolling
+noremap <Up> <nop>
+noremap <Down> <nop>
+noremap <Left> <nop>
+noremap <Right> <nop>
 
