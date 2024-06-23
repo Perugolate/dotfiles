@@ -26,6 +26,11 @@ Plug 'snakemake/snakefmt'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
+Plug 'stevearc/oil.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+Plug 'tpope/vim-commentary'
 " Plug 'plasticboy/vim-markdown'
 " Plug 'jalvesaq/Nvim-R'
 call plug#end()
