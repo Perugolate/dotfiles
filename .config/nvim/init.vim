@@ -31,6 +31,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
 " Plug 'plasticboy/vim-markdown'
 " Plug 'jalvesaq/Nvim-R'
 call plug#end()
