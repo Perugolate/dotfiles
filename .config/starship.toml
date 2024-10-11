@@ -14,6 +14,7 @@ $c\
 $rust\
 $rlang\
 $python\
+$quarto\
 $conda\
 [](fg:teal bg:blue)\
 $docker_context\
@@ -134,6 +135,11 @@ format = '[[ $symbol ](fg:base bg:teal)]($style)'
 
 [python]
 symbol = ""
+style = "bg:teal"
+format = '[[ $symbol ](fg:base bg:teal)]($style)'
+
+[quarto]
+symbol = "⨁"
 style = "bg:teal"
 format = '[[ $symbol ](fg:base bg:teal)]($style)'
 
