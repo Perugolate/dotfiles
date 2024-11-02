@@ -32,6 +32,7 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-surround'
 " Plug 'plasticboy/vim-markdown'
 " Plug 'jalvesaq/Nvim-R'
 call plug#end()
@@ -113,7 +114,7 @@ vnoremap , :TREPLSendSelection<CR>
 " set the neoterm python repl
 " --no-autoindent was necessary before implementation of bracketed paste
 "let g:neoterm_repl_python = 'ipython --no-autoindent'
-let g:neoterm_repl_python = 'ipython' 
+"let g:neoterm_repl_python = 'ipython' 
 "let g:neoterm_bracketed_paste = 1
 " had to turn off bracketed paste as it breaks :TREPLSendLine in R
 " use paste magic instead of the exec command (can't remember why though)
@@ -265,4 +266,6 @@ require('lualine').setup {
         theme = "catppuccin"
     }
 }
+require("oil").setup()
 END
+set nofoldenable
