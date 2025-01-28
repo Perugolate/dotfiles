@@ -47,7 +47,7 @@ colorscheme catppuccin-mocha
 "autocmd vimenter * ++nested colorscheme gruvbox
 let g:airline_powerline_fonts = 1
 
-set clipboard+=unnamedplus   " use clipboard rather then +/* registers
+"set clipboard+=unnamedplus   " use clipboard rather then +/* registers
 set number                   " turn on line numbering
 "set timeoutlen=50            " make mode swithcing faster
 set wildmenu                 " visual autocomplete for command menu
@@ -269,5 +269,26 @@ require('lualine').setup {
         theme = "catppuccin"
     }
 }
+vim.g.clipboard = {
+  name = 'OSC 52',
+  copy = {
+    ['+'] = require('vim.ui.clipboard.osc52').copy, -- System clipboard
+    ['*'] = require('vim.ui.clipboard.osc52').copy, -- Primary selection
+  },
+  paste = {
+    ['+'] = require('vim.ui.clipboard.osc52').paste, -- System clipboard
+    ['*'] = require('vim.ui.clipboard.osc52').paste, -- Primary selection
+  },
+}
+vim.api.nvim_create_autocmd('TextYankPost', {
+    callback = function()
+        vim.highlight.on_yank()
+        local copy_to_unnamedplus = require('vim.ui.clipboard.osc52').copy('+')
+        copy_to_unnamedplus(vim.v.event.regcontents)
+        local copy_to_unnamed = require('vim.ui.clipboard.osc52').copy('*')
+        copy_to_unnamed(vim.v.event.regcontents)
+    end
+})
 require("oil").setup()
 END
+set nofoldenable
