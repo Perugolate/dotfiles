@@ -116,3 +116,8 @@ bindkey -M viins '^[^?' backward-kill-word    # Alternative binding that might b
 # Normal mode (if you want it there too)
 #bindkey -M vicmd '\e\b' backward-kill-word
 #bindkey -M vicmd '^[^?' backward-kill-word
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"
+bindkey '^[[A' atuin-up-search
