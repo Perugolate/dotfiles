@@ -88,5 +88,17 @@ shopt -s cmdhist
 # Update history after each command
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
+#eval "$(starship init bash)"
 eval "$(starship init bash)"
 export STARSHIP_CONFIG=/mnt/apps/users/pjohnsto/config/starship.toml
+
+. "$HOME/.atuin/bin/env"
+
+[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+
+eval "$(atuin init bash)"
+#eval "$(atuin init bash --disable-up-arrow)"
+
+bind -x '"\e[A": __atuin_history --shell-up-key-binding'
+bind -x '"\eOA": __atuin_history --shell-up-key-binding'
+
