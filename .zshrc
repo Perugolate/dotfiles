@@ -108,3 +108,11 @@ bindkey -M vicmd '\e.' append-last-word
 # following required as zvm breaks yank last argument
 # Insert mode
 bindkey -M viins '\e.' insert-last-word
+
+# Insert mode
+bindkey -M viins '\e\b' backward-kill-word    # Alt + Backspace
+bindkey -M viins '^[^?' backward-kill-word    # Alternative binding that might be needed
+
+# Normal mode (if you want it there too)
+#bindkey -M vicmd '\e\b' backward-kill-word
+#bindkey -M vicmd '^[^?' backward-kill-word
