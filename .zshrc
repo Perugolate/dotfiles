@@ -119,5 +119,25 @@ bindkey -M viins '^[^?' backward-kill-word    # Alternative binding that might b
 
 . "$HOME/.atuin/bin/env"
 
+bindkey -r '^R'
+
 eval "$(atuin init zsh)"
+#bindkey '^r' atuin-search
+
+# bind to the up key, which depends on terminal mode
 bindkey '^[[A' atuin-up-search
+bindkey '^[OA' atuin-up-search
+
+# Define a function to set up Atuin bindings
+function zvm_after_init() {
+    # Bind for both vi insert and normal modes
+    bindkey -M viins '^r' atuin-search
+    bindkey -M vicmd '^r' atuin-search
+    
+    # Up arrow bindings for both modes
+    bindkey -M viins '^[[A' atuin-up-search
+    bindkey -M viins '^[OA' atuin-up-search
+    bindkey -M vicmd '^[[A' atuin-up-search
+    bindkey -M vicmd '^[OA' atuin-up-search
+}
+
