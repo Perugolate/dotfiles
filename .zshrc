@@ -121,12 +121,12 @@ bindkey -M viins '^[^?' backward-kill-word    # Alternative binding that might b
 
 bindkey -r '^R'
 
-eval "$(atuin init zsh)"
+eval "$(atuin init zsh --disable-up-arrow)"
 #bindkey '^r' atuin-search
 
-# bind to the up key, which depends on terminal mode
-bindkey '^[[A' atuin-up-search
-bindkey '^[OA' atuin-up-search
+## bind to the up key, which depends on terminal mode
+#bindkey '^[[A' atuin-up-search
+#bindkey '^[OA' atuin-up-search
 
 # Define a function to set up Atuin bindings
 function zvm_after_init() {
@@ -135,9 +135,15 @@ function zvm_after_init() {
     bindkey -M vicmd '^r' atuin-search
     
     # Up arrow bindings for both modes
-    bindkey -M viins '^[[A' atuin-up-search
-    bindkey -M viins '^[OA' atuin-up-search
-    bindkey -M vicmd '^[[A' atuin-up-search
-    bindkey -M vicmd '^[OA' atuin-up-search
+#    bindkey -M viins '^[[A' atuin-up-search
+#    bindkey -M viins '^[OA' atuin-up-search
+#    bindkey -M vicmd '^[[A' atuin-up-search
+#    bindkey -M vicmd '^[OA' atuin-up-search
+}
+
+function zvm_vi_yank() {
+	zvm_yank
+	echo ${CUTBUFFER} | pbcopy
+	zvm_exit_visual_mode
 }
 
