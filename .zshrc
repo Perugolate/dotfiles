@@ -3,7 +3,8 @@ export ZSH="$HOME/.oh-my-zsh"
 
 # zsh themes
 ZSH_THEME="robbyrussell"
-plugins=(git fast-syntax-highlighting)
+#plugins=(git)
+plugins=(git zsh-syntax-highlighting)
 ZVM_VI_ESCAPE_BINDKEY=jj
 plugins+=(zsh-vi-mode)
 source $ZSH/oh-my-zsh.sh
@@ -96,8 +97,6 @@ eval "$(starship init zsh)"
 export PATH=/Users/paul/edirect:${PATH}
 source <(fzf --zsh)
 
-# should move this to plugins
-#source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 #source ~/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
 
 # Normal mode
@@ -145,5 +144,12 @@ function zvm_vi_yank() {
 	zvm_yank
 	echo ${CUTBUFFER} | pbcopy
 	zvm_exit_visual_mode
+}
+
+zle_highlight=('paste:none')
+
+# prevent red highlighting of visual selection
+function zvm_highlight() {
+    region_highlight=()
 }
 
