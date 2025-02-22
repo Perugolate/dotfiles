@@ -279,7 +279,7 @@ require('lualine').setup {
 require("oil").setup()
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the listed parsers MUST always be installed)
-  ensure_installed = { "c", "csv", "bash", "groovy", "lua", "luadoc", "markdown", "markdown_inline", "python", "r", "snakemake", "ssh_config", "tsv", "vim", "vimdoc", "yaml" },
+  ensure_installed = { "c", "csv", "bash", "groovy", "latex", "lua", "luadoc", "markdown", "markdown_inline", "python", "r", "snakemake", "ssh_config", "tsv", "vim", "vimdoc", "yaml" },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
