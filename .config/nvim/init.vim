@@ -16,10 +16,10 @@ Plug 'preservim/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'kassio/neoterm'
-Plug 'vim-pandoc/vim-pandoc'
-Plug 'vim-pandoc/vim-pandoc-syntax'
-Plug 'vim-pandoc/vim-rmarkdown'
-Plug 'snakemake/snakemake', {'rtp': 'misc/vim'}
+"Plug 'vim-pandoc/vim-pandoc'
+"Plug 'vim-pandoc/vim-pandoc-syntax'
+"Plug 'vim-pandoc/vim-rmarkdown'
+"Plug 'snakemake/snakemake', {'rtp': 'misc/vim'}
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'snakemake/snakefmt'
@@ -32,6 +32,10 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Plug 'amarakon/nvim-lua-script'
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Plug 'R-nvim/R.nvim'
 " Plug 'tpope/vim-surround'
 " Plug 'plasticboy/vim-markdown'
 " Plug 'jalvesaq/Nvim-R'
@@ -47,6 +51,8 @@ colorscheme catppuccin-mocha
 "autocmd vimenter * ++nested colorscheme gruvbox
 let g:airline_powerline_fonts = 1
 
+" set guicursor=
+" autocmd OptionSet guicursor noautocmd set guicursor=
 set clipboard+=unnamedplus   " use clipboard rather then +/* registers
 set number                   " turn on line numbering
 "set timeoutlen=50            " make mode swithcing faster
@@ -258,14 +264,57 @@ noremap <Down> <nop>
 noremap <Left> <nop>
 noremap <Right> <nop>
 
+
+set nofoldenable
+
 let g:pandoc#syntax#conceal#use = 1
 let g:pandoc#syntax#codeblocks#embeds#langs = ["R=r", "bash=sh", "vim", "python"]
 lua << END
+vim.api.nvim_command("highlight! TermCursorNC guifg=NONE guibg=NONE")
 require('lualine').setup {
     options = {
         theme = "catppuccin"
     }
 }
 require("oil").setup()
-END
-set nofoldenable
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all" (the listed parsers MUST always be installed)
+  ensure_installed = { "c", "csv", "bash", "groovy", "lua", "luadoc", "markdown", "markdown_inline", "python", "r", "snakemake", "ssh_config", "tsv", "vim", "vimdoc", "yaml" },
+
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- Automatically install missing parsers when entering buffer
+  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+  auto_install = true,
+
+  -- List of parsers to ignore installing (or "all")
+  ignore_install = { "javascript" },
+
+  ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
+  -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
+
+  highlight = {
+    enable = true,
+
+    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
+    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
+    -- the name of the parser)
+    -- list of language that will be disabled
+    disable = { "c", "rust" },
+    -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
+    disable = function(lang, buf)
+        local max_filesize = 100 * 1024 -- 100 KB
+        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+        if ok and stats and stats.size > max_filesize then
+            return true
+        end
+    end,
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
