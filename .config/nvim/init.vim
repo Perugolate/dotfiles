@@ -14,7 +14,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'ryanoasis/vim-devicons'
 Plug 'preservim/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'kassio/neoterm'
 "Plug 'vim-pandoc/vim-pandoc'
 "Plug 'vim-pandoc/vim-pandoc-syntax'
@@ -33,6 +33,7 @@ Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'neovim/nvim-lspconfig'
 " Plug 'amarakon/nvim-lua-script'
 " Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Plug 'R-nvim/R.nvim'
@@ -181,30 +182,30 @@ let g:neoterm_repl_ipython_magic = 1
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
-if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
-
-highlight clear SignColumn " git gutter same color as background
+"""""inoremap <silent><expr> <TAB>
+"""""      \ pumvisible() ? "\<C-n>" :
+"""""      \ <SID>check_back_space() ? "\<TAB>" :
+"""""      \ coc#refresh()
+"""""inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+"""""
+"""""function! s:check_back_space() abort
+"""""  let col = col('.') - 1
+"""""  return !col || getline('.')[col - 1]  =~# '\s'
+"""""endfunction
+"""""
+"""""" Use <c-space> to trigger completion.
+"""""inoremap <silent><expr> <c-space> coc#refresh()
+"""""
+"""""" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+"""""" position. Coc only does snippet and additional edit on confirm.
+"""""" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+"""""if exists('*complete_info')
+"""""  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+"""""else
+"""""  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+"""""endif
+"""""
+"""""highlight clear SignColumn " git gutter same color as background
 
 " Send RMarkdown code chunk.
 " taken from https://github.com/daler/dotfiles
@@ -280,6 +281,7 @@ require("oil").setup()
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the listed parsers MUST always be installed)
   ensure_installed = { "c", "csv", "bash", "groovy", "latex", "lua", "luadoc", "markdown", "markdown_inline", "python", "r", "snakemake", "ssh_config", "tsv", "vim", "vimdoc", "yaml" },
+  highlight = { enable = true },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -317,4 +319,17 @@ require'nvim-treesitter.configs'.setup {
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
   },
+}
+require('lspconfig').r_language_server.setup{
+    cmd = { "/Users/paul/mambaforge/envs/glmgampoi/bin/R", "--slave", "-e", "languageserver::run()" },
+    filetypes = { "r", "R", "rmd", "Rmd" },
+    root_dir = require('lspconfig.util').find_git_ancestor,
+    settings = {
+        r = {
+            lsp = {
+                diagnostics = true,  -- Enable diagnostics
+                rich_documentation = true  -- Enable hover documentation
+            }
+        }
+    }
 }
