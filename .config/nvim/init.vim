@@ -34,6 +34,16 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'neovim/nvim-lspconfig'
+"Plug 'echasnovski/mini.nvim', { 'branch': 'stable' }
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-copilot'
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'folke/trouble.nvim'
+"Plug 'dense-analysis/ale'
 " Plug 'amarakon/nvim-lua-script'
 " Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Plug 'R-nvim/R.nvim'
@@ -323,13 +333,75 @@ require'nvim-treesitter.configs'.setup {
 require('lspconfig').r_language_server.setup{
     cmd = { "/Users/paul/mambaforge/envs/glmgampoi/bin/R", "--slave", "-e", "languageserver::run()" },
     filetypes = { "r", "R", "rmd", "Rmd" },
-    root_dir = require('lspconfig.util').find_git_ancestor,
-    settings = {
-        r = {
-            lsp = {
-                diagnostics = true,  -- Enable diagnostics
-                rich_documentation = true  -- Enable hover documentation
-            }
-        }
-    }
+    -- Change root_dir to work in any directory containing R files
 }
+local cmp = require'cmp'
+local luasnip = require'luasnip'
+
+-- luasnip setup
+require('luasnip/loaders/from_vscode').lazy_load()
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  }),
+  sources = cmp.config.sources({
+    { name = 'copilot', group_index = 2 },
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+    { name = 'buffer' },
+    { name = 'path' },
+  }),
+})
+
+-- Set configuration for specific filetype.
+cmp.setup.filetype('gitcommit', {
+  sources = cmp.config.sources({
+    { name = 'cmp_git' }, -- You can add git commits completions as well
+    { name = 'buffer' },
+  })
+})
+
+-- Use buffer source for `/` and `?` (search)
+cmp.setup.cmdline({ '/', '?' }, {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+-- Use cmdline & path source for ':' (command)
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' },
+    { name = 'cmdline' }
+  })
+})
+require("trouble").setup({
+  modes = {
+    preview_float = {
+      mode = "diagnostics",
+      preview = {
+        type = "float",
+        relative = "editor",
+        border = "rounded",
+        title = "Preview",
+        title_pos = "center",
+        position = { 0, -2 },
+        size = { width = 0.3, height = 0.3 },
+        zindex = 200,
+      },
+    },
+  },
+})
+
