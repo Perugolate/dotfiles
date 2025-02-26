@@ -234,7 +234,7 @@ nmap <Leader>cd /```{<CR>NjV/```\n<CR>k<Plug>(neoterm-repl-send)<CR>/```{r<CR>
 " default timeout length seems to be too short for me to use the above mapping
 " had to comment this out again because it slowed down neoterm send too much
 "set timeout timeoutlen=3000 ttimeoutlen=100
-let g:pandoc#spell#enabled = 0
+""""let g:pandoc#spell#enabled = 0
 
 " if neovim then map quick terminal/window navigation, and terminal mode exit
 " if neovim also fix terminal mode Alt+b and Alt+f line navigation and Alt+.
@@ -278,8 +278,8 @@ noremap <Right> <nop>
 
 set nofoldenable
 
-let g:pandoc#syntax#conceal#use = 1
-let g:pandoc#syntax#codeblocks#embeds#langs = ["R=r", "bash=sh", "vim", "python"]
+"""let g:pandoc#syntax#conceal#use = 1
+"""let g:pandoc#syntax#codeblocks#embeds#langs = ["R=r", "bash=sh", "vim", "python"]
 lua << END
 vim.api.nvim_command("highlight! TermCursorNC guifg=NONE guibg=NONE")
 require('lualine').setup {
@@ -290,7 +290,7 @@ require('lualine').setup {
 require("oil").setup()
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the listed parsers MUST always be installed)
-  ensure_installed = { "c", "csv", "bash", "groovy", "latex", "lua", "luadoc", "markdown", "markdown_inline", "python", "r", "snakemake", "ssh_config", "tsv", "vim", "vimdoc", "yaml" },
+  ensure_installed = { "c", "csv", "bash", "groovy", "latex", "lua", "luadoc", "markdown", "markdown_inline", "python", "r", "rnoweb", "snakemake", "ssh_config", "tsv", "vim", "vimdoc", "yaml" },
   highlight = { enable = true },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
@@ -404,4 +404,3 @@ require("trouble").setup({
     },
   },
 })
-
