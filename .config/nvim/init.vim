@@ -26,12 +26,12 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-copilot'
+Plug 'hrsh7th/cmp-cmdline'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'folke/trouble.nvim'
-"Plug 'dense-analysis/ale'
-"Plug 'R-nvim/R.nvim'
-"Plug 'jalvesaq/Nvim-R'
+Plug 'nvim-telescope/telescope-ui-select.nvim'
+Plug 'dense-analysis/ale'
 call plug#end()
 "Plug Ins end------------------------
 
@@ -91,7 +91,7 @@ nnoremap <S-Tab> <C-W>W
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 " update: this is a problem
-" it remaps delete line and insert 
+" it remaps delete line and insert
 " nnoremap <C-s> :TREPLSendLine<CR>
 " vnoremap <C-s> :TREPLSendSelection<CR>
 let g:neoterm_default_mod = 'vertical'
@@ -100,7 +100,7 @@ vnoremap , :TREPLSendSelection<CR>
 " set the neoterm python repl
 " --no-autoindent was necessary before implementation of bracketed paste
 "let g:neoterm_repl_python = 'ipython --no-autoindent'
-"let g:neoterm_repl_python = 'ipython' 
+"let g:neoterm_repl_python = 'ipython'
 "let g:neoterm_bracketed_paste = 1
 " had to turn off bracketed paste as it breaks :TREPLSendLine in R
 " use paste magic instead of the exec command (can't remember why though)
@@ -148,7 +148,9 @@ noremap <Left> <nop>
 noremap <Right> <nop>
 
 set nofoldenable
+
 nnoremap <silent> ca <cmd>lua vim.lsp.buf.code_action()<CR>
+
 lua << END
 vim.api.nvim_command("highlight! TermCursorNC guifg=NONE guibg=NONE")
 require('lualine').setup {
@@ -273,4 +275,31 @@ require("trouble").setup({
     },
   },
 })
+-- This is your opts table
+require("telescope").setup {
+  extensions = {
+    ["ui-select"] = {
+      require("telescope.themes").get_dropdown {
+        -- even more opts
+      }
+
+      -- pseudo code / specification for writing custom displays, like the one
+      -- for "codeactions"
+      -- specific_opts = {
+      --   [kind] = {
+      --     make_indexed = function(items) -> indexed_items, width,
+      --     make_displayer = function(widths) -> displayer
+      --     make_display = function(displayer) -> function(e)
+      --     make_ordinal = function(e) -> string
+      --   },
+      --   -- for example to disable the custom builtin "codeactions" display
+      --      do the following
+      --   codeactions = false,
+      -- }
+    }
+  }
+}
+-- To get ui-select loaded and working with telescope, you need to call
+-- load_extension, somewhere after setup function:
+require("telescope").load_extension("ui-select")
 
