@@ -7,8 +7,8 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'preservim/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'kassio/neoterm'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
+"Plug 'junegunn/fzf'
+"Plug 'junegunn/fzf.vim'
 Plug 'snakemake/snakefmt'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 Plug 'nvim-lualine/lualine.nvim'
@@ -29,6 +29,7 @@ Plug 'hrsh7th/cmp-copilot'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'kmarius/jsregexp'
 Plug 'folke/trouble.nvim'
 Plug 'nvim-telescope/telescope-ui-select.nvim'
 Plug 'dense-analysis/ale'
@@ -136,10 +137,16 @@ endif
 " it is a hangover from ctrlp.vim
 " look at https://vim.fandom.com/wiki/Unused_keys
 " consider shortcuts for :Buffers etc
-nnoremap <C-p> :Files<Cr>
+"nnoremap <C-p> :Files<Cr>
 " Jump to open buffer
-let g:fzf_buffers_jump = 1
-
+"let g:fzf_buffers_jump = 1
+nnoremap <C-p> <cmd>Telescope find_files<cr>
+" Telescope mappings
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+"
 " disable arrows for time being
 " note this also disables scrolling
 noremap <Up> <nop>
@@ -302,4 +309,3 @@ require("telescope").setup {
 -- To get ui-select loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
 require("telescope").load_extension("ui-select")
-
