@@ -209,7 +209,7 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 require('lspconfig').r_language_server.setup{
-    cmd = { "/Users/paul/mambaforge/envs/glmgampoi/bin/R", "--slave", "-e", "languageserver::run()" },
+    cmd = { "/Users/paul/miniforge3/envs/glmgampoi/bin/R", "--slave", "-e", "languageserver::run()" },
     filetypes = { "r", "R", "rmd", "Rmd" },
     -- Change root_dir to work in any directory containing R files
 }
