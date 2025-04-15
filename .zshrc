@@ -3,9 +3,13 @@ export ZSH="$HOME/.oh-my-zsh"
 
 # zsh themes
 ZSH_THEME="robbyrussell"
-#plugins=(git)
+
+# plugins=(git)
 plugins=(git zsh-syntax-highlighting)
-ZVM_VI_ESCAPE_BINDKEY=jj
+
+# separate escape binding for zsh vi mode
+ZVM_VI_ESCAPE_BINDKEY='^G'
+
 plugins+=(zsh-vi-mode)
 source $ZSH/oh-my-zsh.sh
 
@@ -71,27 +75,6 @@ bindkey '\ew'  pb-copy-region-as-kill-deactivate-mark
 bindkey '\eW'  pb-copy-region-as-kill-deactivate-mark
 bindkey '^Y'   pb-yank
 
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/paul/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/paul/mambaforge/etc/profile.d/conda.sh" ]; then
-        . "/Users/paul/mambaforge/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/paul/mambaforge/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-
-if [ -f "/Users/paul/mambaforge/etc/profile.d/mamba.sh" ]; then
-    . "/Users/paul/mambaforge/etc/profile.d/mamba.sh"
-fi
-# <<< conda initialize <<<
-
-
 # starship
 eval "$(starship init zsh)"
 export PATH=/Users/paul/edirect:${PATH}
@@ -132,7 +115,7 @@ function zvm_after_init() {
     # Bind for both vi insert and normal modes
     bindkey -M viins '^r' atuin-search
     bindkey -M vicmd '^r' atuin-search
-    
+
     # Up arrow bindings for both modes
 #    bindkey -M viins '^[[A' atuin-up-search
 #    bindkey -M viins '^[OA' atuin-up-search
@@ -152,4 +135,20 @@ zle_highlight=('paste:none')
 function zvm_highlight() {
     region_highlight=()
 }
+
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/paul/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/paul/miniforge3/etc/profile.d/conda.sh" ]; then
+        . "/Users/paul/miniforge3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/paul/miniforge3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
 
