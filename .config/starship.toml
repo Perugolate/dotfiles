@@ -145,8 +145,8 @@ format = '[[ $symbol ](fg:base bg:teal)]($style)'
 
 [docker_context]
 symbol = ""
-style = "bg:mantle"
-format = '[[ $symbol( $context) ](fg:#83a598 bg:color_bg3)]($style)'
+style = "bg:blue"
+format = '[[ $symbol( $context) ](fg:base bg:blue)]($style)'
 
 [conda]
 symbol = ""
@@ -170,3 +170,4 @@ vimcmd_symbol = '[](bold fg:creen)'
 vimcmd_replace_one_symbol = '[](bold fg:purple)'
 vimcmd_replace_symbol = '[](bold fg:purple)'
 vimcmd_visual_symbol = '[](bold fg:lavender)'
+
