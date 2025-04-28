@@ -284,25 +284,37 @@ require("trouble").setup({
 })
 -- This is your opts table
 require("telescope").setup {
+  defaults = {
+    mappings = {
+      i = {
+        -- Yank the relative path in insert mode
+        ["<C-y>"] = function(prompt_bufnr)
+          local selection = require("telescope.actions.state").get_selected_entry(prompt_bufnr)
+          -- Try to get the display value first (relative path), fallback to full path if needed
+          local path = selection.ordinal or selection.display or selection.filename or selection.path
+          vim.fn.setreg("+", path)
+          vim.fn.setreg("\"", path)
+          vim.notify("Yanked: " .. path, vim.log.levels.INFO)
+        end,
+      },
+      n = {
+        -- Yank the relative path in normal mode
+        ["y"] = function(prompt_bufnr)
+          local selection = require("telescope.actions.state").get_selected_entry(prompt_bufnr)
+          -- Try to get the display value first (relative path), fallback to full path if needed
+          local path = selection.ordinal or selection.display or selection.filename or selection.path
+          vim.fn.setreg("+", path)
+          vim.fn.setreg("\"", path)
+          vim.notify("Yanked: " .. path, vim.log.levels.INFO)
+        end,
+      },
+    },
+  },
   extensions = {
     ["ui-select"] = {
       require("telescope.themes").get_dropdown {
-        -- even more opts
+        -- your existing settings
       }
-
-      -- pseudo code / specification for writing custom displays, like the one
-      -- for "codeactions"
-      -- specific_opts = {
-      --   [kind] = {
-      --     make_indexed = function(items) -> indexed_items, width,
-      --     make_displayer = function(widths) -> displayer
-      --     make_display = function(displayer) -> function(e)
-      --     make_ordinal = function(e) -> string
-      --   },
-      --   -- for example to disable the custom builtin "codeactions" display
-      --      do the following
-      --   codeactions = false,
-      -- }
     }
   }
 }
