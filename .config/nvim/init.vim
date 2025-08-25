@@ -39,7 +39,7 @@ call plug#end()
 colorscheme catppuccin-mocha
 
 set clipboard+=unnamedplus   " use clipboard rather then +/* registers
-set number                   " turn on line numbering
+set nu rnu                   " turn on relative line numbering
 set wildmenu                 " visual autocomplete for command menu
 set showmatch                " highlight matching [{()}]
 set hlsearch                 " highlight matches
