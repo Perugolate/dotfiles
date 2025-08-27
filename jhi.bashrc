@@ -28,13 +28,17 @@ alias ga='git add'
 alias gcmsg='git commit --message'
 alias ggp='git push'
 alias gl='git pull'
-alias gst='git status'
+alias gst='git status -uno'
+alias bat='/mnt/apps/users/pjohnsto/bat-v0.25.0-x86_64-unknown-linux-gnu/bat'
+alias ena_file_downloader='java -jar /mnt/apps/users/pjohnsto/bin/ena-file-downloader.jar'
 
 . "$HOME/.cargo/env"
 
 export PATH=/mnt/apps/users/pjohnsto/bin/:$PATH
 
 export TERM=xterm-256color
+
+export PGAP_INPUT_DIR=/mnt/shared/scratch/pjohnsto/pgap/.pgap
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -73,6 +77,7 @@ bind "set mark-symlinked-directories on"
 bind "set visible-stats on"
 
 # Larger history file
+HISTCMD=50000
 HISTSIZE=50000
 HISTFILESIZE=50000
 
@@ -96,9 +101,9 @@ export STARSHIP_CONFIG=/mnt/apps/users/pjohnsto/config/starship.toml
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 
-eval "$(atuin init bash)"
-#eval "$(atuin init bash --disable-up-arrow)"
+#eval "$(atuin init bash)"
+eval "$(atuin init bash --disable-up-arrow)"
 
-bind -x '"\e[A": __atuin_history --shell-up-key-binding'
-bind -x '"\eOA": __atuin_history --shell-up-key-binding'
+#bind -x '"\e[A": __atuin_history --shell-up-key-binding'
+#bind -x '"\eOA": __atuin_history --shell-up-key-binding'
 
