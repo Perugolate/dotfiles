@@ -33,6 +33,10 @@ Plug 'kmarius/jsregexp'
 Plug 'folke/trouble.nvim'
 Plug 'nvim-telescope/telescope-ui-select.nvim'
 Plug 'dense-analysis/ale'
+Plug 'nextflow-io/vim-language-nextflow', { 'commit': '0be2ac1b325427617e4926c117fe1cdb6a8c3a4e' }
+Plug 'chomosuke/typst-preview.nvim', { 'tag': 'v1.*' }
+Plug 'coder/claudecode.nvim'
+Plug 'folke/snacks.nvim'
 call plug#end()
 "Plug Ins end------------------------
 
@@ -159,10 +163,9 @@ set nofoldenable
 nnoremap <silent> ca <cmd>lua vim.lsp.buf.code_action()<CR>
 
 lua << END
-vim.api.nvim_command("highlight! TermCursorNC guifg=NONE guibg=NONE")
 require('lualine').setup {
     options = {
-        theme = "catppuccin"
+        theme = "catppuccin-mocha"
     }
 }
 require("oil").setup()
@@ -208,13 +211,37 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
-require('lspconfig').r_language_server.setup{
-    cmd = { "/Users/paul/miniforge3/envs/glmgampoi/bin/R", "--slave", "-e", "languageserver::run()" },
-    filetypes = { "r", "R", "rmd", "Rmd" },
-    -- Change root_dir to work in any directory containing R files
-}
+
 local cmp = require'cmp'
 local luasnip = require'luasnip'
+
+-- R Language Server (modern vim.lsp.config approach)
+vim.lsp.config.r_language_server = {
+  cmd = { "/Users/paul/miniforge3/envs/glmgampoi/bin/R", "--slave", "-e", "languageserver::run()" },
+  filetypes = { "r", "R", "rmd", "Rmd" },
+  root_dir = vim.fs.root(0, { '.git', 'DESCRIPTION', '.Rproj' }),
+}
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'r', 'rmd' },
+  callback = function(args)
+    vim.lsp.enable('r_language_server', { bufnr = args.buf })
+  end,
+})
+
+-- Nextflow LSP setup (modern vim.lsp.config approach)
+vim.lsp.config.nextflow_ls = {
+  cmd = { 'nextflow-language-server' },
+  filetypes = { 'nextflow' },
+  root_dir = vim.fs.root(0, { '.git', 'nextflow.config', 'main.nf' }),
+}
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'nextflow',
+  callback = function(args)
+    vim.lsp.enable('nextflow_ls', { bufnr = args.buf })
+  end,
+})
 
 -- luasnip setup
 require('luasnip/loaders/from_vscode').lazy_load()
@@ -370,5 +397,26 @@ require("catppuccin").setup({
     },
 })
 
+vim.lsp.config.tinymist = {
+  cmd = { 'tinymist' },
+  filetypes = { 'typst' },
+  settings = {
+    formatterMode = 'typstyle',
+    exportPdf = 'onType',
+  },
+}
+
+vim.lsp.enable('tinymist')
+
 -- setup must be called before loading
 vim.cmd.colorscheme "catppuccin"
+
+require("claudecode").setup()
+
+vim.keymap.set("n", "<leader>ac", "<cmd>ClaudeCode<cr>",       { desc = "Toggle Claude" })
+vim.keymap.set("n", "<leader>af", "<cmd>ClaudeCodeFocus<cr>",  { desc = "Focus Claude window" })
+vim.keymap.set("n", "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>",  { desc = "Add current buffer" })
+vim.keymap.set("v", "<leader>as", "<cmd>ClaudeCodeSend<cr>",   { desc = "Send selection" })
+vim.keymap.set("n", "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", { desc = "Accept diff" })
+vim.keymap.set("n", "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>",   { desc = "Deny diff" })
+
