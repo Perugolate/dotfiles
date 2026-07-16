@@ -32,6 +32,8 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'nvim-telescope/telescope-ui-select.nvim'
+Plug 'nextflow-io/vim-language-nextflow', { 'commit': '0be2ac1b325427617e4926c117fe1cdb6a8c3a4e' }
 " Plug 'tpope/vim-surround'
 " Plug 'plasticboy/vim-markdown'
 " Plug 'jalvesaq/Nvim-R'
@@ -247,7 +249,8 @@ endif
 " it is a hangover from ctrlp.vim
 " look at https://vim.fandom.com/wiki/Unused_keys
 " consider shortcuts for :Buffers etc
-nnoremap <C-p> :Files<Cr>
+"nnoremap <C-p> :Files<Cr>
+nnoremap <C-p> <cmd>Telescope find_files<cr>
 " Jump to open buffer
 let g:fzf_buffers_jump = 1
 
@@ -266,7 +269,7 @@ set mouse=r
 lua << END
 require('lualine').setup {
     options = {
-        theme = "catppuccin"
+        theme = "catppuccin-mocha"
     }
 }
 vim.g.clipboard = {
@@ -290,5 +293,23 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end
 })
 require("oil").setup()
+require("telescope").setup({
+  defaults = {
+    mappings = {
+      i = {
+        ["<esc>"] = require("telescope.actions").close,
+      },
+    },
+  },
+  extensions = {
+    ["ui-select"] = {
+      require("telescope.themes").get_dropdown {
+        -- even more opts
+      }
+    }
+  }
+})
+-- To get ui-select loaded and working with telescope
+require("telescope").load_extension("ui-select")
 END
 set nofoldenable
