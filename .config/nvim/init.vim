@@ -86,6 +86,11 @@ endif
 " get rid of line numbers after opening terminal in a split
 autocmd TermOpen * set nonumber
 
+" match terminal cursor style form mac (zsh vi insert mode solid vertical bar)
+" also gives terminal mode a non-blinking bar as its fallback cursor, so R
+" (which resets the cursor to the terminal default) keeps the vertical line
+"set guicursor=n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25-blinkon0-TermCursor
+
 " Use tab and shift-tab to cycle through windows.
 nnoremap <Tab> <C-W>w
 nnoremap <S-Tab> <C-W>W
