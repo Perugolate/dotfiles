@@ -266,6 +266,9 @@ let g:pandoc#syntax#codeblocks#embeds#langs = ["R=r", "bash=sh", "vim", "python"
 
 set mouse=r
 
+" match terminal cursor style form mac (zsh vi insert mode solid vertical bar)
+set guicursor=n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25-blinkon0-TermCursor
+
 lua << END
 require('lualine').setup {
     options = {
