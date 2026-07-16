@@ -19,7 +19,7 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter', { 'branch': 'main', 'do': ':TSUpdate' }
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -174,48 +174,38 @@ require('lualine').setup {
     }
 }
 require("oil").setup()
-require'nvim-treesitter.configs'.setup {
-  -- A list of parser names, or "all" (the listed parsers MUST always be installed)
-  ensure_installed = { "c", "csv", "bash", "groovy", "latex", "lua", "luadoc", "markdown", "markdown_inline", "python", "r", "rnoweb", "snakemake", "ssh_config", "tsv", "vim", "vimdoc", "yaml" },
-  highlight = { enable = true },
+-- ===== nvim-treesitter `main` branch (migrated from `master` 2026-07-16) =====
+-- On `main` there is no ensure_installed/highlight/auto_install: install()
+-- replaces ensure_installed, and highlighting is started manually per buffer.
 
-  -- Install parsers synchronously (only applied to `ensure_installed`)
-  sync_install = false,
+-- Pin a tree-sitter CLI >= 0.26.1 (required by `main` to compile parsers).
+-- Your global ~/opt/tree-sitter is 0.25.2 (too old) and is left untouched;
+-- this only prepends to PATH for processes nvim spawns.
+vim.env.PATH = vim.fn.expand('~/opt/tree-sitter-cli-0.26.11') .. ':' .. vim.env.PATH
 
-  -- Automatically install missing parsers when entering buffer
-  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
-  auto_install = true,
+require('nvim-treesitter').setup() -- default install_dir = stdpath('data')/site
 
-  -- List of parsers to ignore installing (or "all")
-  ignore_install = { "javascript" },
+-- Install/refresh parsers (async; no-op once present). Lands in
+-- ~/.local/share/nvim/site/parser. Run :TSUpdate to update them later.
+require('nvim-treesitter').install({
+  "c", "csv", "bash", "groovy", "latex", "lua", "luadoc", "markdown",
+  "markdown_inline", "python", "r", "rnoweb", "snakemake", "ssh_config",
+  "tsv", "vim", "vimdoc", "yaml", "json", "toml",
+})
 
-  ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
-  -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
-
-  highlight = {
-    enable = true,
-
-    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
-    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
-    -- the name of the parser)
-    -- list of language that will be disabled
-    disable = { "c", "rust" },
-    -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
-    disable = function(lang, buf)
-        local max_filesize = 100 * 1024 -- 100 KB
-        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-        if ok and stats and stats.size > max_filesize then
-            return true
-        end
-    end,
-
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-}
+-- Highlighting is provided by Neovim, enabled per-buffer. This replaces
+-- master's `highlight = { enable = true, disable = <largefile fn> }`.
+-- (master's `disable = { "c", "rust" }` was shadowed by the function below
+-- and never actually took effect, so only the large-file guard is kept.)
+vim.api.nvim_create_autocmd('FileType', {
+  callback = function(args)
+    local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(args.buf))
+    if ok and stats and stats.size > 100 * 1024 then -- skip TS on files > 100 KB
+      return
+    end
+    pcall(vim.treesitter.start, args.buf) -- no-op if no parser for this filetype
+  end,
+})
 
 local cmp = require'cmp'
 local luasnip = require'luasnip'
