@@ -31,11 +31,9 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
 Plug 'nvim-telescope/telescope-ui-select.nvim'
 Plug 'nextflow-io/vim-language-nextflow', { 'commit': '0be2ac1b325427617e4926c117fe1cdb6a8c3a4e' }
-" Plug 'tpope/vim-surround'
-" Plug 'plasticboy/vim-markdown'
-" Plug 'jalvesaq/Nvim-R'
 call plug#end()
 "Plug Ins end------------------------
 
