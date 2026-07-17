@@ -3,10 +3,7 @@ vim.env.NVIM_TUI_ENABLE_TRUE_COLOR = 1
 -- Plug Ins start----------------------
 local Plug = vim.fn['plug#']
 vim.fn['plug#begin']('~/.vim/plugged')
-Plug 'airblade/vim-gitgutter'
-Plug 'ryanoasis/vim-devicons'
-Plug 'preservim/nerdtree'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'lewis6991/gitsigns.nvim'
 Plug 'kassio/neoterm'
 -- Plug 'junegunn/fzf'
 -- Plug 'junegunn/fzf.vim'
@@ -27,14 +24,14 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-copilot'
+Plug 'zbirenbaum/copilot.lua'
+Plug 'zbirenbaum/copilot-cmp'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'kmarius/jsregexp'
 Plug 'folke/trouble.nvim'
 Plug 'nvim-telescope/telescope-ui-select.nvim'
-Plug 'dense-analysis/ale'
 Plug('nextflow-io/vim-language-nextflow', { commit = '0be2ac1b325427617e4926c117fe1cdb6a8c3a4e' })
 Plug('chomosuke/typst-preview.nvim', { tag = 'v1.*' })
 Plug 'coder/claudecode.nvim'
@@ -52,6 +49,12 @@ vim.opt.showmatch = true                -- highlight matching [{()}]
 vim.opt.hlsearch = true                 -- highlight matches
 vim.opt.splitright = true               -- vsplit on the right
 vim.opt.inccommand = 'nosplit'          -- turn on live substitution
+vim.opt.undofile = true                 -- persistent undo across nvim restarts
+vim.opt.ignorecase = true               -- case-insensitive search...
+vim.opt.smartcase = true                -- ...unless the pattern has a capital
+
+-- inline diagnostics (off by default since nvim 0.11)
+vim.diagnostic.config({ virtual_text = true })
 
 -- move vertically by visual line
 vim.keymap.set('n', 'j', 'gj')
@@ -136,6 +139,17 @@ require('lualine').setup {
         theme = "catppuccin-mocha"
     }
 }
+require('gitsigns').setup()
+
+-- copilot.lua provides the agent; copilot-cmp exposes it as the 'copilot'
+-- cmp source. Ghost text and panel are disabled per copilot-cmp's docs
+-- (they clash with the cmp menu).
+require('copilot').setup({
+  suggestion = { enabled = false },
+  panel = { enabled = false },
+})
+require('copilot_cmp').setup()
+
 require("oil").setup()
 -- '-' opens the current file's parent directory as an editable oil buffer
 vim.keymap.set("n", "-", "<cmd>Oil<cr>", { desc = "Open parent directory (oil)" })
@@ -194,33 +208,22 @@ vim.api.nvim_create_autocmd('FileType', {
 local cmp = require'cmp'
 local luasnip = require'luasnip'
 
--- R Language Server (modern vim.lsp.config approach)
+-- R Language Server. root_markers resolves the project root per buffer;
+-- attaching is filetype-driven via vim.lsp.enable.
 vim.lsp.config.r_language_server = {
   cmd = { "/Users/paul/miniforge3/envs/glmgampoi/bin/R", "--slave", "-e", "languageserver::run()" },
   filetypes = { "r", "R", "rmd", "Rmd" },
-  root_dir = vim.fs.root(0, { '.git', 'DESCRIPTION', '.Rproj' }),
+  root_markers = { '.git', 'DESCRIPTION', '.Rproj' },
 }
+vim.lsp.enable('r_language_server')
 
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'r', 'rmd' },
-  callback = function(args)
-    vim.lsp.enable('r_language_server', { bufnr = args.buf })
-  end,
-})
-
--- Nextflow LSP setup (modern vim.lsp.config approach)
+-- Nextflow LSP
 vim.lsp.config.nextflow_ls = {
   cmd = { 'nextflow-language-server' },
   filetypes = { 'nextflow' },
-  root_dir = vim.fs.root(0, { '.git', 'nextflow.config', 'main.nf' }),
+  root_markers = { '.git', 'nextflow.config', 'main.nf' },
 }
-
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'nextflow',
-  callback = function(args)
-    vim.lsp.enable('nextflow_ls', { bufnr = args.buf })
-  end,
-})
+vim.lsp.enable('nextflow_ls')
 
 -- luasnip setup
 require('luasnip/loaders/from_vscode').lazy_load()
@@ -239,20 +242,14 @@ cmp.setup({
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
   }),
   sources = cmp.config.sources({
-    { name = 'copilot', group_index = 2 },
+    -- no group_index on copilot: with one it only surfaced when every other
+    -- source (incl. buffer) returned nothing, i.e. essentially never
+    { name = 'copilot' },
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'buffer' },
     { name = 'path' },
   }),
-})
-
--- Set configuration for specific filetype.
-cmp.setup.filetype('gitcommit', {
-  sources = cmp.config.sources({
-    { name = 'cmp_git' }, -- You can add git commits completions as well
-    { name = 'buffer' },
-  })
 })
 
 -- Use buffer source for `/` and `?` (search)
@@ -288,6 +285,10 @@ require("trouble").setup({
     },
   },
 })
+-- diagnostics list: <leader>xx uses the float-preview mode defined above,
+-- <leader>xX restricts to the current buffer
+vim.keymap.set('n', '<leader>xx', '<cmd>Trouble preview_float toggle<cr>', { desc = 'Diagnostics (Trouble)' })
+vim.keymap.set('n', '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', { desc = 'Buffer diagnostics (Trouble)' })
 -- This is your opts table
 require("telescope").setup {
   defaults = {
