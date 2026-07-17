@@ -180,6 +180,20 @@ vim.keymap.set("n", "-", "<cmd>Oil<cr>", { desc = "Open parent directory (oil)" 
 -- auto_format=true => format on save; also provides :Snakefmt and :SnakefmtInfo.
 -- Set auto_format=false if you'd rather format manually with :Snakefmt.
 require("snakefmt").setup({ auto_format = true })
+
+-- Snakefiles must be space-indented. The snakemake filetype has no ftplugin,
+-- so it inherits expandtab=off + tabstop=8 => <CR>/autoindent inserts TABs,
+-- which breaks `snakemake` and makes the file unparseable for snakefmt.
+-- Force 4-space indentation instead.
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'snakemake',
+  callback = function(args)
+    vim.bo[args.buf].expandtab = true
+    vim.bo[args.buf].shiftwidth = 4
+    vim.bo[args.buf].softtabstop = 4
+    vim.bo[args.buf].tabstop = 4
+  end,
+})
 -- ===== nvim-treesitter `main` branch (migrated from `master` 2026-07-16) =====
 -- On `main` there is no ensure_installed/highlight/auto_install: install()
 -- replaces ensure_installed, and highlighting is started manually per buffer.

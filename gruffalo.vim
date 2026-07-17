@@ -311,6 +311,20 @@ require("snakefmt").setup({
   -- bin_path = "/mnt/apps/users/pjohnsto/conda/bin/snakefmt",
 })
 
+-- Snakefiles must be space-indented. The snakemake filetype has no ftplugin,
+-- so it inherits expandtab=off + tabstop=8 => <CR>/autoindent inserts TABs,
+-- which breaks `snakemake` and makes the file unparseable for snakefmt.
+-- Force 4-space indentation instead.
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'snakemake',
+  callback = function(args)
+    vim.bo[args.buf].expandtab = true
+    vim.bo[args.buf].shiftwidth = 4
+    vim.bo[args.buf].softtabstop = 4
+    vim.bo[args.buf].tabstop = 4
+  end,
+})
+
 require("telescope").setup({
   defaults = {
     mappings = {
