@@ -1,7 +1,6 @@
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 ""Plug Ins start----------------------
 call plug#begin('~/.vim/plugged')
-Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'ryanoasis/vim-devicons'
 Plug 'preservim/nerdtree'
@@ -15,7 +14,7 @@ Plug 'nvim-lualine/lualine.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'stevearc/oil.nvim'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -174,6 +173,13 @@ require('lualine').setup {
     }
 }
 require("oil").setup()
+-- '-' opens the current file's parent directory as an editable oil buffer
+vim.keymap.set("n", "-", "<cmd>Oil<cr>", { desc = "Open parent directory (oil)" })
+
+-- snakefmt: format Snakefile/*.smk. Binary resolved from PATH (~/miniforge3/bin).
+-- auto_format=true => format on save; also provides :Snakefmt and :SnakefmtInfo.
+-- Set auto_format=false if you'd rather format manually with :Snakefmt.
+require("snakefmt").setup({ auto_format = true })
 -- ===== nvim-treesitter `main` branch (migrated from `master` 2026-07-16) =====
 -- On `main` there is no ensure_installed/highlight/auto_install: install()
 -- replaces ensure_installed, and highlighting is started manually per buffer.

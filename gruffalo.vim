@@ -8,7 +8,6 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 ""Plug Ins start----------------------
 call plug#begin('~/.vim/plugged')
 "Plug 'bling/vim-airline'
-Plug 'tpope/vim-fugitive'
 "Plug 'edkolev/promptline.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'ryanoasis/vim-devicons'
@@ -251,6 +250,11 @@ endif
 " consider shortcuts for :Buffers etc
 "nnoremap <C-p> :Files<Cr>
 nnoremap <C-p> <cmd>Telescope find_files<cr>
+" Telescope mappings (<leader> is <space>)
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 " Jump to open buffer
 let g:fzf_buffers_jump = 1
 
@@ -296,6 +300,17 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end
 })
 require("oil").setup()
+-- '-' opens the current file's parent directory as an editable oil buffer
+vim.keymap.set("n", "-", "<cmd>Oil<cr>", { desc = "Open parent directory (oil)" })
+
+-- snakefmt: format Snakefile/*.smk on save (auto_format), plus :Snakefmt / :SnakefmtInfo.
+-- The binary is found via PATH (/mnt/apps/users/pjohnsto/conda/bin/snakefmt).
+-- If nvim can't see it on PATH, uncomment bin_path below.
+require("snakefmt").setup({
+  auto_format = true,
+  -- bin_path = "/mnt/apps/users/pjohnsto/conda/bin/snakefmt",
+})
+
 require("telescope").setup({
   defaults = {
     mappings = {
