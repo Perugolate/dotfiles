@@ -14,6 +14,7 @@ Plug 'nvim-tree/nvim-web-devicons'
 Plug 'stevearc/oil.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug('ThePrimeagen/harpoon', { branch = 'harpoon2' })
 Plug('mg979/vim-visual-multi', { branch = 'master' })
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -149,6 +150,20 @@ require('copilot').setup({
   panel = { enabled = false },
 })
 require('copilot_cmp').setup()
+
+-- harpoon (trial, added 2026-07-18): pin a per-project working set of
+-- files and jump to them with one chord. <leader>ha adds the current
+-- file, <leader>hh shows/edits the list, <leader>1-4 jump to slots.
+local harpoon = require('harpoon')
+harpoon:setup()
+vim.keymap.set('n', '<leader>ha', function() harpoon:list():add() end,
+  { desc = 'Harpoon: add file' })
+vim.keymap.set('n', '<leader>hh', function() harpoon.ui:toggle_quick_menu(harpoon:list()) end,
+  { desc = 'Harpoon: menu' })
+for i = 1, 4 do
+  vim.keymap.set('n', '<leader>' .. i, function() harpoon:list():select(i) end,
+    { desc = 'Harpoon: file ' .. i })
+end
 
 require("oil").setup()
 -- '-' opens the current file's parent directory as an editable oil buffer
