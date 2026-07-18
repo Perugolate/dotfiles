@@ -170,8 +170,34 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.bo[args.buf].shiftwidth = 4
     vim.bo[args.buf].softtabstop = 4
     vim.bo[args.buf].tabstop = 4
+    -- no LSP for snakemake: buffer-local <leader>fm shadows the global
+    -- LSP-format map and runs snakefmt instead (also auto-runs on save)
+    vim.keymap.set('n', '<leader>fm', function()
+      require('snakefmt').format()
+    end, { buffer = args.buf, desc = 'Format buffer (snakefmt)' })
   end,
 })
+-- R: 2-space indentation, matching the tidyverse default that both lintr
+-- (diagnostics) and styler (formatting) assume. languageserver's formatter
+-- runs styler with indent = the buffer's shiftwidth, so this also makes
+-- formatting produce lintr-clean output.
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'r', 'rmd' },
+  callback = function(args)
+    vim.bo[args.buf].expandtab = true
+    vim.bo[args.buf].shiftwidth = 2
+    vim.bo[args.buf].softtabstop = 2
+    vim.bo[args.buf].tabstop = 2
+  end,
+})
+
+-- Format buffer (normal) or selection (visual) via the attached LSP.
+-- For R this is styler inside languageserver. gq{motion} also formats
+-- through the LSP formatexpr that attaches automatically.
+vim.keymap.set({ 'n', 'x' }, '<leader>fm', function()
+  vim.lsp.buf.format({ async = true })
+end, { desc = 'Format buffer/selection (LSP)' })
+
 -- ===== nvim-treesitter `main` branch (migrated from `master` 2026-07-16) =====
 -- On `main` there is no ensure_installed/highlight/auto_install: install()
 -- replaces ensure_installed, and highlighting is started manually per buffer.
