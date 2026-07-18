@@ -27,7 +27,7 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'zbirenbaum/copilot.lua'
-Plug 'zbirenbaum/copilot-cmp'
+Plug 'perugolate/copilot-cmp'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
@@ -39,6 +39,7 @@ Plug('chomosuke/typst-preview.nvim', { tag = 'v1.*' })
 Plug 'coder/claudecode.nvim'
 Plug 'folke/snacks.nvim'
 Plug 'folke/which-key.nvim'
+Plug 'perugolate/undotree'
 vim.fn['plug#end']()
 -- Plug Ins end------------------------
 
@@ -118,6 +119,10 @@ vim.g.neoterm_repl_ipython_magic = 1
 vim.keymap.set('n', '<Leader>cd',
   [[/```{<CR>NjV/```\n<CR>k<Plug>(neoterm-repl-send)<CR>/```{r<CR>]],
   { remap = true })
+
+-- undotree: browse/restore the full undo history (incl. branches and
+-- past sessions via undofile). NB <leader> maps must come after mapleader.
+vim.keymap.set('n', '<leader>u', '<cmd>UndotreeToggle<cr>', { desc = 'Undo tree' })
 
 vim.keymap.set('n', '<C-p>', '<cmd>Telescope find_files<cr>')
 -- Telescope mappings
