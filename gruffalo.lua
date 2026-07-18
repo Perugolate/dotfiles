@@ -6,9 +6,15 @@
 --   - mouse=r, guicursor, ipython repl kept from the old cluster config
 vim.env.NVIM_TUI_ENABLE_TRUE_COLOR = 1
 
+-- Keep bulky, re-creatable data (plugins, treesitter parsers) on the fast
+-- apps array instead of the quota'd home. Falls back to the usual paths
+-- when the apps dir doesn't exist so this file still loads on the mac.
+local apps = '/mnt/apps/users/pjohnsto'
+local on_cluster = vim.fn.isdirectory(apps) == 1
+
 -- Plug Ins start----------------------
 local Plug = vim.fn['plug#']
-vim.fn['plug#begin']('~/.vim/plugged')
+vim.fn['plug#begin'](on_cluster and (apps .. '/nvim/plugged') or '~/.vim/plugged')
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'kassio/neoterm'
 Plug 'snakemake/snakefmt'
@@ -265,7 +271,10 @@ if vim.fn.isdirectory(ts_cli) == 1 then
   vim.env.PATH = ts_cli .. ':' .. vim.env.PATH
 end
 
-require('nvim-treesitter').setup() -- default install_dir = stdpath('data')/site
+-- parsers go on the apps array too (default: stdpath('data')/site)
+require('nvim-treesitter').setup(
+  on_cluster and { install_dir = apps .. '/nvim/treesitter' } or {}
+)
 
 -- Install/refresh parsers (async; no-op once present). Lands in
 -- ~/.local/share/nvim/site/parser. Run :TSUpdate to update them later.
