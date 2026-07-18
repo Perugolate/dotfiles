@@ -316,12 +316,13 @@ vim.keymap.set({ 'n', 'x', 'o' }, '[f', ts_move('goto_previous_start', '@functio
 local cmp = require'cmp'
 local luasnip = require'luasnip'
 
--- R Language Server: needs install.packages("languageserver") in this R
+-- R Language Server: needs the languageserver package installed in this R
 -- (styler ships with it, which is what <leader>fm formatting runs).
--- R comes from PATH (conda); point cmd at a specific R binary if needed.
-if vim.fn.executable('R') == 1 then
+-- NB the guard must test the same binary the cmd uses, not 'R' on PATH.
+local r_bin = '/mnt/apps/users/pjohnsto/conda/envs/r-lsp/bin/R'
+if vim.fn.executable(r_bin) == 1 then
   vim.lsp.config.r_language_server = {
-    cmd = { '/mnt/apps/users/pjohnsto/conda/envs/r-lsp/bin/R', '--slave', '-e', 'languageserver::run()' },
+    cmd = { r_bin, '--slave', '-e', 'languageserver::run()' },
     filetypes = { 'r', 'R', 'rmd', 'Rmd' },
     root_markers = { '.git', 'DESCRIPTION', '.Rproj' },
   }
