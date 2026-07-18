@@ -20,6 +20,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug('nvim-treesitter/nvim-treesitter', { branch = 'main', ['do'] = ':TSUpdate' })
+Plug('nvim-treesitter/nvim-treesitter-textobjects', { branch = 'main' })
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -37,6 +38,7 @@ Plug('nextflow-io/vim-language-nextflow', { commit = '0be2ac1b325427617e4926c117
 Plug('chomosuke/typst-preview.nvim', { tag = 'v1.*' })
 Plug 'coder/claudecode.nvim'
 Plug 'folke/snacks.nvim'
+Plug 'folke/which-key.nvim'
 vim.fn['plug#end']()
 -- Plug Ins end------------------------
 
@@ -151,6 +153,17 @@ require('copilot').setup({
 })
 require('copilot_cmp').setup()
 
+-- which-key: pop up a labeled menu of possible continuations after a
+-- pending chord (e.g. <leader>); labels come from the desc= on keymaps
+local wk = require('which-key')
+wk.setup({})
+wk.add({
+  { '<leader>f', group = 'find / format' },
+  { '<leader>h', group = 'harpoon' },
+  { '<leader>x', group = 'diagnostics' },
+  { '<leader>a', group = 'claude' },
+})
+
 -- harpoon (trial, added 2026-07-18): pin a per-project working set of
 -- files and jump to them with one chord. <leader>ha adds the current
 -- file, <leader>hh shows/edits the list, <leader>1-4 jump to slots.
@@ -245,6 +258,32 @@ vim.api.nvim_create_autocmd('FileType', {
     pcall(vim.treesitter.start, args.buf) -- no-op if no parser for this filetype
   end,
 })
+
+-- treesitter textobjects (main branch, matching nvim-treesitter main):
+-- syntax-aware nouns for the vim grammar. af/if = function, aa/ia =
+-- argument, ac/ic = class; ]f/[f move to next/previous function.
+require('nvim-treesitter-textobjects').setup({
+  select = { lookahead = true }, -- act on the next textobject if not inside one
+  move = { set_jumps = true },   -- ]f/[f push to the jumplist (<C-o> to return)
+})
+local ts_select = function(query)
+  return function()
+    require('nvim-treesitter-textobjects.select').select_textobject(query, 'textobjects')
+  end
+end
+local ts_move = function(fn, query)
+  return function()
+    require('nvim-treesitter-textobjects.move')[fn](query, 'textobjects')
+  end
+end
+vim.keymap.set({ 'x', 'o' }, 'af', ts_select('@function.outer'), { desc = 'a function' })
+vim.keymap.set({ 'x', 'o' }, 'if', ts_select('@function.inner'), { desc = 'inner function' })
+vim.keymap.set({ 'x', 'o' }, 'aa', ts_select('@parameter.outer'), { desc = 'an argument' })
+vim.keymap.set({ 'x', 'o' }, 'ia', ts_select('@parameter.inner'), { desc = 'inner argument' })
+vim.keymap.set({ 'x', 'o' }, 'ac', ts_select('@class.outer'), { desc = 'a class' })
+vim.keymap.set({ 'x', 'o' }, 'ic', ts_select('@class.inner'), { desc = 'inner class' })
+vim.keymap.set({ 'n', 'x', 'o' }, ']f', ts_move('goto_next_start', '@function.outer'), { desc = 'Next function' })
+vim.keymap.set({ 'n', 'x', 'o' }, '[f', ts_move('goto_previous_start', '@function.outer'), { desc = 'Previous function' })
 
 local cmp = require'cmp'
 local luasnip = require'luasnip'
