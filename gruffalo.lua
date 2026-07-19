@@ -47,6 +47,7 @@ Plug 'folke/which-key.nvim'
 Plug 'perugolate/undotree'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'sindrets/diffview.nvim'
+Plug 'vimpostor/vim-tpipeline'
 Plug 'NeogitOrg/neogit'
 vim.fn['plug#end']()
 -- Plug Ins end------------------------
