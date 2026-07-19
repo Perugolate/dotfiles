@@ -1,5 +1,7 @@
-export PATH=$HOME/opt/testing/nvim-macos-arm64/bin/:/Users/paul/opt/:/Users/paul/opt/sratoolkit.3.0.10-mac-x86_64/bin/:$PATH
+export PATH=$HOME/opt/testing/nvim-macos-arm64/bin/:/Users/paul/opt/:/Users/paul/opt/sratoolkit.3.0.10-mac-x86_64/bin/:/Users/paul/.local/bin/:$PATH
 export ZSH="$HOME/.oh-my-zsh"
+# secrets (tokens etc.) live in an untracked side file
+[[ -f ~/.zshrc.secrets ]] && source ~/.zshrc.secrets
 
 # zsh themes
 ZSH_THEME="robbyrussell"
@@ -78,7 +80,9 @@ bindkey '^Y'   pb-yank
 # starship
 eval "$(starship init zsh)"
 export PATH=/Users/paul/edirect:${PATH}
-source <(fzf --zsh)
+# fzf keybindings replaced by television (see zvm_after_init); fzf binary
+# kept for tools that use it as a library
+#source <(fzf --zsh)
 
 #source ~/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
 
@@ -112,6 +116,13 @@ eval "$(atuin init zsh --disable-up-arrow)"
 
 # Define a function to set up Atuin bindings
 function zvm_after_init() {
+    # television: ^T smart autocomplete (files etc). Must run inside
+    # zvm_after_init or ZVM clobbers the binding. It also grabs ^R for its
+    # own history channel, so the atuin bindings BELOW must stay below to
+    # win ^R back.
+    eval "$(tv init zsh)"
+    bindkey -M viins '^t' tv-smart-autocomplete
+
     # Bind for both vi insert and normal modes
     bindkey -M viins '^r' atuin-search
     bindkey -M vicmd '^r' atuin-search
@@ -151,4 +162,8 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
