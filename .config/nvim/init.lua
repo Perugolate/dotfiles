@@ -40,6 +40,9 @@ Plug 'coder/claudecode.nvim'
 Plug 'folke/snacks.nvim'
 Plug 'folke/which-key.nvim'
 Plug 'perugolate/undotree'
+Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'sindrets/diffview.nvim'
+Plug 'NeogitOrg/neogit'
 vim.fn['plug#end']()
 -- Plug Ins end------------------------
 
@@ -149,6 +152,10 @@ require('lualine').setup {
 }
 require('gitsigns').setup()
 
+-- indent guides (module renamed to 'ibl' in v3); scope highlight uses
+-- treesitter. Catppuccin themes it via its default integrations.
+require('ibl').setup()
+
 -- copilot.lua provides the agent; copilot-cmp exposes it as the 'copilot'
 -- cmp source. Ghost text and panel are disabled per copilot-cmp's docs
 -- (they clash with the cmp menu).
@@ -158,12 +165,25 @@ require('copilot').setup({
 })
 require('copilot_cmp').setup()
 
+-- neogit (magit-style git UI) with diffview integration; diffview also
+-- stands alone for reviewing changesets and file history
+require('diffview').setup()
+require('neogit').setup({
+  integrations = { diffview = true, telescope = true },
+})
+vim.keymap.set('n', '<leader>gg', '<cmd>Neogit<cr>', { desc = 'Neogit status' })
+vim.keymap.set('n', '<leader>gd', '<cmd>DiffviewOpen<cr>', { desc = 'Diff working tree' })
+vim.keymap.set('n', '<leader>gh', '<cmd>DiffviewFileHistory %<cr>', { desc = 'File history' })
+vim.keymap.set('n', '<leader>gH', '<cmd>DiffviewFileHistory<cr>', { desc = 'Repo history' })
+vim.keymap.set('n', '<leader>gq', '<cmd>DiffviewClose<cr>', { desc = 'Close diffview' })
+
 -- which-key: pop up a labeled menu of possible continuations after a
 -- pending chord (e.g. <leader>); labels come from the desc= on keymaps
 local wk = require('which-key')
 wk.setup({})
 wk.add({
   { '<leader>f', group = 'find / format' },
+  { '<leader>g', group = 'git' },
   { '<leader>h', group = 'harpoon' },
   { '<leader>x', group = 'diagnostics' },
   { '<leader>a', group = 'claude' },
