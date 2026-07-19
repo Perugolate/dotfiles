@@ -13,6 +13,12 @@ plugins=(git zsh-syntax-highlighting)
 ZVM_VI_ESCAPE_BINDKEY='^G'
 
 plugins+=(zsh-vi-mode)
+
+# user + homebrew completion functions — must be on fpath before
+# oh-my-zsh runs compinit (brew installs _rg/_bat/_gh/... but its dir was
+# otherwise only added to fpath too late to count)
+fpath=(~/.zsh/completions /opt/homebrew/share/zsh/site-functions $fpath)
+
 source $ZSH/oh-my-zsh.sh
 
 # aliases

@@ -1,0 +1,10 @@
+[metadata]
+name = "zoxide"
+description = "Frecent directories from zoxide, best-ranked first"
+requirements = ["zoxide"]
+
+[source]
+command = "zoxide query --list"
+
+[preview]
+command = "ls -pa1 '{}'"
