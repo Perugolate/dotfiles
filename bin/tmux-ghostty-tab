@@ -1,13 +1,17 @@
 #!/bin/sh
 # Ghostty tab launcher (ghostty config: command = ~/.local/bin/tmux-ghostty-tab)
-# First tab creates the persistent session 'main'. Every further tab gets
-# its own session GROUPED with main: windows are shared, focus is
-# independent, so tabs don't mirror each other. Each extra tab opens a
-# fresh window, and its session self-destructs on detach/close while
-# 'main' (and all windows) persist.
+# First tab owns the persistent 'main' session (reattaching if it exists
+# unattached, e.g. after quitting ghostty). Every further tab gets its own
+# independent throwaway session, so tabs behave like plain terminal tabs:
+# Ctrl-D/exit ends shell -> session -> tab; Cmd-W kills the tab's session
+# (destroy-unattached). Only 'main' persists across closes.
 TMUX_BIN=/opt/homebrew/bin/tmux
+
 if "$TMUX_BIN" has-session -t main 2>/dev/null; then
-  exec "$TMUX_BIN" new-session -t main \; set-option destroy-unattached on \; new-window
-else
-  exec "$TMUX_BIN" new-session -s main
+  if [ -z "$("$TMUX_BIN" list-clients -t main 2>/dev/null)" ]; then
+    exec "$TMUX_BIN" attach -t main
+  fi
+  # main is busy in another tab: ephemeral session for this one
+  exec "$TMUX_BIN" new-session \; set-option destroy-unattached on
 fi
+exec "$TMUX_BIN" new-session -s main

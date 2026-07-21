@@ -39,9 +39,13 @@ deploy by `cp` to their live locations (see per-file comments).
 - `.config/tmux/tmux.conf`: prefix `C-a`, vi copy-mode, OSC52
   passthrough (`set-clipboard on`), true color, `escape-time 10`,
   tpipeline status line (nvim's lualine projected into the tmux bar).
-- Ghostty auto-starts tmux: every tab runs `bin/tmux-ghostty-tab` →
-  sessions grouped with `main` (shared windows, independent focus).
-  Closing a tab detaches; `exit` ends the shell/window.
+- Ghostty auto-starts tmux: every tab runs `bin/tmux-ghostty-tab` —
+  first tab is the persistent `main` session, extra tabs get independent
+  throwaway sessions. `Ctrl-D`/`exit` closes shell and tab; `Cmd-W` kills
+  the tab's session. Only `main` survives closing (reattached by the
+  next first tab). tmux forwards `session · pane-title` as the tab title
+  (`main · user@host`, updating on ssh), and the status bar's right end
+  shows the session name — so tabs are distinguishable at a glance.
 - Ghostty `Alt+V` vim-style scrollback key table (useful outside tmux
   only — inside tmux, scrollback belongs to tmux copy-mode).
 - Cluster: same conf; `tmux new -A -s main` after ssh; sessions survive
@@ -93,9 +97,9 @@ deploy by `cp` to their live locations (see per-file comments).
 | `C-a C-a <key>` | send prefix to inner tmux (nested gruffalo session) |
 | `tmux new -A -s main` | attach-or-create; the post-ssh habit on gruffalo |
 
-Ghostty tabs = grouped tmux sessions: independent focus, shared windows.
-Close tab = detach (shell keeps running as a window in `main`); `exit` /
-`Ctrl-D` to actually end a shell. Occasional `C-a s` housekeeping.
+Ghostty tabs = independent tmux sessions: first tab = persistent `main`;
+extra tabs are ephemeral (`Ctrl-D`/`exit`/`Cmd-W` all end them for real).
+Windows created inside a tab (`C-a c`) belong to that tab's session.
 
 ### Ghostty (outside tmux only)
 `Alt+V` scroll table: `j/k` lines, `C-d/C-u` half-page, `gg`/`G`
