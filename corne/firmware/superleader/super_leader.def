@@ -1,0 +1,15 @@
+// Super Leader sequences — https://getreuer.info/posts/keyboards/super-leader
+//
+// SEQ_KEY(name, (keys...), keycode): tap LEADER then the keys to send the
+// keycode; the keycode stays held while the last key of the sequence is held.
+// SEQ_STR(name, (keys...), "string"): types the string.
+
+// LEADER, V -> Cmd+V (paste, macOS)
+SEQ_KEY(v, (KC_V), G(KC_V))
+
+// LEADER, D, F, U -> jump the USB-connected half into the bootloader
+// (RPI-RP2 drive appears; no Vial bootloader key or unlock combo needed)
+SEQ_KEY(dfu, (KC_D, KC_F, KC_U), QK_BOOT)
+
+// LEADER, M, E -> types email address
+SEQ_STR(me, (KC_M, KC_E), "me@example.com")
