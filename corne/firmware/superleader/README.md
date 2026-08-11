@@ -4,8 +4,10 @@
 chordalhold build (vial-qmk `0f7eae3a`, foostan kbd_firmware build recipe),
 plus Pascal Getreuer's **Super Leader** community module.
 
-- SHA-256: `18bb2f003c1e2c594e86bd9d868ad4d3dc0c4a8e1722ce9eaba2fa8ba4996264`
+- SHA-256: `8885e96fad92e7954824ce02b4e1464b73a2d4a45ab4f415bd1e1fe195281ede`
 - Module docs: https://getreuer.info/posts/keyboards/super-leader
+- NB: QMK embeds a build timestamp, so rebuilding identical source yields a
+  different SHA-256 every time — a hash mismatch does not imply a code change.
 - Everything from the chordalhold build is still present (Chordal Hold,
   Flow Tap, combos, QMK Settings) and the Vial keyboard UID is unchanged,
   so existing `.vil` layouts still load.
@@ -28,9 +30,42 @@ recipe). The built `*superleader.uf2` is deliberately NOT committed:
 the real email is embedded in the binary (visible via `strings`).
 Rebuild locally to regenerate it.
 
+
 Notes: successive keys must come within 1000 ms; tap-hold keys count as
 their tap keycode, so home-row mods don't interfere; layer keys are
 ignored mid-sequence.
+
+
+## Modules: Cyclotab + Select Word (added alongside Super Leader)
+
+Community-module keycodes (bind in Vial via the **Any** key; identical on
+all boards; stable as long as the module order in `keymap.json` is
+super_leader, cyclotab, select_word):
+
+| Keycode | Hex | What it does |
+|---|---|---|
+| `LEADER` | `0x77C0` | Super Leader |
+| `SELECT_WORD` | `0x77C1` | select word; repeat to extend; +Shift = line |
+| `SELECT_WORD_BACK` | `0x77C2` | select word backwards |
+| `SELECT_LINE` | `0x77C3` | select line; repeat extends down |
+| `SELECT_LINE_UP` | `0x77C4` | extend line selection up |
+
+**Cyclotab** registers no keycode — bind `LGUI(KC_TAB)` (Any: `0x082B`) and
+the module takes it over: tap once = app switcher opens with Cmd virtually
+held (~2 s timeout); arrows navigate (whitelisted, refresh the timeout);
+Enter (consumed) or timeout commits; Esc cancels. Configured for macOS
+(`CYCLOTAB_KEYS LCMD(KC_TAB)`); Select Word sends macOS hotkeys
+(`SELECT_WORD_OS_MAC`).
+
+**Cyclotab layer-key patch:** upstream cyclotab ends cycling on any
+non-whitelisted key, so pressing a layer key to reach arrows on another
+layer killed the cycle before the arrows could be used. Patched to treat
+layer-switch keys (MO/LM/LT-hold/TG/OSL/tri-layer) like the arrows: stay
+active and refresh the timer. The patch lives in the fork
+**github.com/Perugolate/qmk-modules** (commit "Cyclotab: keep cycling
+active across layer-switch keys"), which both build trees now clone as
+`modules/getreuer` — so it survives re-cloning. `upstream` remote points
+at getreuer/qmk-modules for syncing.
 
 ## Binding the LEADER key in Vial
 
