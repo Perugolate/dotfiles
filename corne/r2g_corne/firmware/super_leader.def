@@ -13,3 +13,8 @@ SEQ_KEY(dfu, (KC_D, KC_F, KC_U), QK_BOOT)
 
 // LEADER, M, E -> types email address
 SEQ_STR(me, (KC_M, KC_E), "me@example.com")
+
+// LEADER, S -> types the snakemake edit command (no trailing newline:
+// review it, then press Enter yourself). Relative path, so run from the
+// project root. Works identically on mac zsh and the HPC bash.
+SEQ_STR(snakefile, (KC_S), "nvim workflow/Snakefile")

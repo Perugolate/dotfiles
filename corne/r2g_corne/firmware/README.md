@@ -21,7 +21,7 @@ This branch has community-module support, so Super Leader works.
 
 SHA-256:
 ```
-213e09f1d4fe223bdbb8662ec77b273216390147ad1f668050085853dfd37f4f  mechboards_crkbd_r2g_6col_vial_superleader.uf2
+becd1ce10feacdf5078d817aa5918c10ccfdad997f68bb69167b2924d4d3fb07  mechboards_crkbd_r2g_6col_vial_superleader.uf2
 daeaebe4f86e8f972c675bbb8eb90e973c9f9916d23b95b1006852abe7990a42  mechboards_crkbd_r2g_6col_vial.uf2
 ```
 
@@ -39,6 +39,7 @@ present in the binary.
 | LEADER, V | Cmd+V (held while V is held) |
 | LEADER, M, E | types `me@example.com` |
 | LEADER, D, F, U | bootloader (`QK_BOOT`): the USB-connected half reboots as `RPI-RP2` |
+| LEADER, S | types `nvim workflow/Snakefile` (no trailing Enter) |
 
 
 **Privacy note:** the committed `super_leader.def` uses a placeholder

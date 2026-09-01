@@ -4,7 +4,7 @@
 chordalhold build (vial-qmk `0f7eae3a`, foostan kbd_firmware build recipe),
 plus Pascal Getreuer's **Super Leader** community module.
 
-- SHA-256: `8885e96fad92e7954824ce02b4e1464b73a2d4a45ab4f415bd1e1fe195281ede`
+- SHA-256: `643cde27f50a5223e425d002d44150922deb26493d995db9b27fcae79adf3b3a`
 - Module docs: https://getreuer.info/posts/keyboards/super-leader
 - NB: QMK embeds a build timestamp, so rebuilding identical source yields a
   different SHA-256 every time — a hash mismatch does not imply a code change.
@@ -22,6 +22,7 @@ definitions ([super_leader.def](super_leader.def)):
 | LEADER, V | Cmd+V (held while V is held) |
 | LEADER, M, E | types `me@example.com` |
 | LEADER, D, F, U | bootloader (`QK_BOOT`): the USB-connected half reboots as `RPI-RP2` |
+| LEADER, S | types `nvim workflow/Snakefile` (no trailing Enter) |
 
 
 **Privacy note:** the committed `super_leader.def` uses a placeholder
